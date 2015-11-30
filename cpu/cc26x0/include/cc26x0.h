@@ -70,21 +70,6 @@ typedef enum IRQn
     PERIPH_COUNT_IRQn     = (TRNG_IRQn + 1) /**< Number of peripheral IDs */
 } IRQn_Type;
 
-/** @name Cortex-M3 core interrupt handlers
- * @{
- */
-void Reset_Handler(void);        /**< Reset handler */
-void NMI_Handler(void);          /**< NMI handler */
-void HardFault_Handler(void);    /**< Hard fault handler */
-void MemManage_Handler(void);    /**< Memory management handler */
-void BusFault_Handler(void);     /**< Bus fault handler */
-void UsageFault_Handler(void);   /**< Usage fault handler */
-void SVC_Handler(void);          /**< SVC handler */
-void DebugMon_Handler(void);     /**< Debug monitor handler */
-void PendSV_Handler(void);       /**< PendSV handler */
-void SysTick_Handler(void);      /**< SysTick handler */
-/** @} */
-
 /**
  * @brief Configuration of the Cortex-M3 processor and core peripherals
  */
