@@ -26,23 +26,32 @@ extern "C" {
 #define GPIO_BASE                   (PERIPH_BASE + 0x22000)
 /** @} */
 
-#define GPIO_DOUT                   (*((uint32_reg_t *)(GPIO_BASE + 0x80)))
-#define GPIO_DOUT_SET               (*((uint32_reg_t *)(GPIO_BASE + 0x90)))
-#define GPIO_DOUT_SET_n(n)          (GPIO_DOUT_SET = (1 << n))
-#define GPIO_DOUT_CLR               (*((uint32_reg_t *)(GPIO_BASE + 0xA0)))
-#define GPIO_DOUT_CLR_n(n)          (GPIO_DOUT_CLR = (1 << n))
-#define GPIO_DOUT_TGL               (*((uint32_reg_t *)(GPIO_BASE + 0xB0)))
-#define GPIO_DOUT_TGL_n(n)          (GPIO_DOUT_TGL = (1 << n))
+#define GPIO_DOUT_SET_n(n)          (GPIO->DOUT_SET = (1 << n))
+#define GPIO_DOUT_CLR_n(n)          (GPIO->DOUT_CLR = (1 << n))
+#define GPIO_DOUT_TGL_n(n)          (GPIO->DOUT_TGL = (1 << n))
 
-#define GPIO_DIN                    (*((uint32_reg_t *)(GPIO_BASE + 0xC0)))
-#define GPIO_DIN_n(n)               ((GPIO_DIN >> n) & 1)
+#define GPIO_DIN_n(n)               ((GPIO->DIN >> n) & 1)
 
-#define GPIO_DOE                    (*((uint32_reg_t *)(GPIO_BASE + 0xD0)))
-/* TODO */
+typedef struct {
+	uint32_reg_t DOUT_FRAG[8];
+	uint32_reg_t __reserved1[0x18];
+	uint32_reg_t DOUT;
+	uint32_reg_t __reserved2[3];
+	uint32_reg_t DOUTSET;
+	uint32_reg_t __reserved3[3];
+	uint32_reg_t DOUTCLR;
+	uint32_reg_t __reserved4[3];
+	uint32_reg_t DOUTTGL;
+	uint32_reg_t __reserved5[3];
+	uint32_reg_t DIN;
+	uint32_reg_t __reserved6[3];
+	uint32_reg_t DOE;
+	uint32_reg_t __reserved7[3];
+	uint32_reg_t EVFLAGS;
+	uint32_reg_t __reserved8[3];
+} GPIO_REGS_t;
 
-#define GPIO_EVFLAGS                (*((uint32_reg_t *)(GPIO_BASE + 0xE0)))
-/* TODO */
-
+#define GPIO (*((GPIO_REGS_t *) (GPIO_BASE)))
 
 #ifdef __cplusplus
 } /* end extern "C" */

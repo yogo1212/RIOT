@@ -3,7 +3,7 @@
  * @{
  *
  * @file
- * @brief           CC26x0 MCU I/O controller register definitions
+ * @brief           CC26x0 MCU I/O register definitions
  *
  * @author          Leon George <leon@georgemail.eu>
  */
@@ -94,9 +94,9 @@ extern "C" {
 
 #define IOCFG_SLEW_RED                  0x00001000  /**< reduced slew rate */
 
-#define IOCFG_PULLCTL_OFF              0x00006000  /**< no IO pull */
-#define IOCFG_PULLCTL_UP               0x00004000  /**< pull up */
-#define IOCFG_PULLCTL_DOWN             0x00002000  /**< pull down */
+#define IOCFG_PULLCTL_OFF               0x00006000  /**< no IO pull */
+#define IOCFG_PULLCTL_UP                0x00004000  /**< pull up */
+#define IOCFG_PULLCTL_DOWN              0x00002000  /**< pull down */
 
 #define IOCFG_EDGEDET_FALLING           0x00010000  /**< edge detection on falling edge */
 #define IOCFG_EDGEDET_RISING            0x00020000  /**< edge detection on rising edge */
@@ -127,49 +127,24 @@ extern "C" {
 /** @} */
 
 
-/* TODO wat dos it doo? */
 /** @addtogroup cpu_specific_peripheral_memory_map
   * @{
   */
-#define AON_IOC_BASE_ADDR           (PERIPH_BASE + 0x94000) /**< always-on-IOC base address */
+#define AON_IOC_BASE           (PERIPH_BASE + 0x94000) /**< always-on-IOC base address */
 /** @} */
 
+typedef struct {
+    uint32_reg_t IOSTRMIN; /* only to be used through TI-provided API */
+    uint32_reg_t IOSTRMED; /* same */
+    uint32_reg_t IOSTRMAX; /* same */
+    uint32_reg_t IOCLATCH;
+    uint32_reg_t CLK32KCTL;
+} AON_REGS_T;
 
-/**
- * @name the IOSTRMIN register
- * @{
- */
-#define IOSTRMIN                    (*((uint32_reg_t *)(AON_IOC_BASE + 0x0))) /* only to be used through TI-provided API */
-/** @} */
+#define AON (*((AON_REGS_t *) (AON_IOC_BASE)))
 
-/**
- * @name the IOSTRMED register
- * @{
- */
-#define IOSTRMED                    (*((uint32_reg_t *)(AON_IOC_BASE + 0x4))) /* only to be used through TI-provided API */
-/** @} */
-
-/**
- * @name the IOSTRM registerX
- * @{
- */
-#define IOSTRMAX                    (*((uint32_reg_t *)(AON_IOC_BASE + 0x8))) /* only to be used through TI-provided API */
-/** @} */
-
-/**
- * @name the IOCLATCH register
- * @{
- */
-#define IOCLATCH                    (*((uint32_reg_t *)(AON_IOC_BASE + 0xC)))
-/** @} */
 #define IOCLATCH_EN                 0x00000001 /**< IO controlled by GPIO or peripheral; kept in AON otherwise */
 
-/**
- * @name the CLK32KCTL register
- * @{
- */
-#define CLK32KCTL                   (*((uint32_reg_t *)(AON_IOC_BASE + 0x10)))
-/** @} */
 #define CLK32KCTL_OEN               0x00000001 /**< don't output SCLK_LF on DIOs with PORT_ID AON_CLK32K */
 
 
