@@ -103,7 +103,6 @@ void SysTick_Handler(void);      /**< SysTick handler */
 /** @addtogroup cpu_specific_peripheral_memory_map
   * @{
   */
-
 #define FLASH_BASE                  0x00000000 /**< FLASH base address */
 #define SRAM_BASE                   0x20000000 /**< SRAM base address */
 #define PERIPH_BASE                 0x40000000 /**< Peripheral base address */
