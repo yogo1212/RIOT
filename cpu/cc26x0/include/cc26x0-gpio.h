@@ -33,22 +33,22 @@ extern "C" {
 #define GPIO_DIN_n(n)               ((GPIO->DIN >> n) & 1)
 
 typedef struct {
-	uint32_reg_t DOUT_FRAG[8];
-	uint32_reg_t __reserved1[0x18];
-	uint32_reg_t DOUT;
-	uint32_reg_t __reserved2[3];
-	uint32_reg_t DOUTSET;
-	uint32_reg_t __reserved3[3];
-	uint32_reg_t DOUTCLR;
-	uint32_reg_t __reserved4[3];
-	uint32_reg_t DOUTTGL;
-	uint32_reg_t __reserved5[3];
-	uint32_reg_t DIN;
-	uint32_reg_t __reserved6[3];
-	uint32_reg_t DOE;
-	uint32_reg_t __reserved7[3];
-	uint32_reg_t EVFLAGS;
-	uint32_reg_t __reserved8[3];
+	reg32_t DOUT_FRAG[8];
+	reg32_t __reserved1[0x18];
+	reg32_t DOUT;
+	reg32_t __reserved2[3];
+	reg32_t DOUTSET;
+	reg32_t __reserved3[3];
+	reg32_t DOUTCLR;
+	reg32_t __reserved4[3];
+	reg32_t DOUTTGL;
+	reg32_t __reserved5[3];
+	reg32_t DIN;
+	reg32_t __reserved6[3];
+	reg32_t DOE;
+	reg32_t __reserved7[3];
+	reg32_t EVFLAGS;
+	reg32_t __reserved8[3];
 } GPIO_REGS_t;
 
 #define GPIO (*((GPIO_REGS_t *) (GPIO_BASE)))

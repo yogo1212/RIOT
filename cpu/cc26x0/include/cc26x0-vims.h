@@ -16,8 +16,8 @@
 /*@}*/
 
 typedef struct {
-    uint32_reg_t STAT;
-    uint32_reg_t CTL;
+    reg32_t STAT;
+    reg32_t CTL;
 } VIMS_REGS_t;
 
 #define VIMS                                (*(VIMS_REGS_t *)(VIMS_BASE + 0x4))

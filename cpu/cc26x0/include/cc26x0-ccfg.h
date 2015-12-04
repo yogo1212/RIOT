@@ -26,28 +26,28 @@ extern "C" {
 
 typedef struct {
 	uint32_regs_t __reserved1[0x3EA];
-	uint32_reg_t EXT_LF_CLK;
-	uint32_reg_t MODE_CONF_1;
-	uint32_reg_t SIZE_AND_DIS_FLAGS;
-	uint32_reg_t MODE_CONF;
-	uint32_reg_t VOLT_LOAD_0;
-	uint32_reg_t VOLT_LOAD_1;
-	uint32_reg_t RTC_OFFSET;
-	uint32_reg_t FREQ_OFFSET;
-	uint32_reg_t IEEE_MAC_0;
-	uint32_reg_t IEEE_MAC_1;
-	uint32_reg_t IEEE_BLE_0;
-	uint32_reg_t IEEE_BLE_1;
-	uint32_reg_t BL_CONFIG;
-	uint32_reg_t ERASE_CONF;
-	uint32_reg_t CCFG_TI_OPTIONS;
-	uint32_reg_t CCFG_TAP_DAP_0;
-	uint32_reg_t CCFG_TAP_DAP_1;
-	uint32_reg_t IMAGE_VALID_CONF;
-	uint32_reg_t CCFG_PROT_31_0;
-	uint32_reg_t CCFG_PROT_63_32;
-	uint32_reg_t CCFG_PROT_95_64;
-	uint32_reg_t CCFG_PROT_127_96;
+	reg32_t EXT_LF_CLK;
+	reg32_t MODE_CONF_1;
+	reg32_t SIZE_AND_DIS_FLAGS;
+	reg32_t MODE_CONF;
+	reg32_t VOLT_LOAD_0;
+	reg32_t VOLT_LOAD_1;
+	reg32_t RTC_OFFSET;
+	reg32_t FREQ_OFFSET;
+	reg32_t IEEE_MAC_0;
+	reg32_t IEEE_MAC_1;
+	reg32_t IEEE_BLE_0;
+	reg32_t IEEE_BLE_1;
+	reg32_t BL_CONFIG;
+	reg32_t ERASE_CONF;
+	reg32_t CCFG_TI_OPTIONS;
+	reg32_t CCFG_TAP_DAP_0;
+	reg32_t CCFG_TAP_DAP_1;
+	reg32_t IMAGE_VALID_CONF;
+	reg32_t CCFG_PROT_31_0;
+	reg32_t CCFG_PROT_63_32;
+	reg32_t CCFG_PROT_95_64;
+	reg32_t CCFG_PROT_127_96;
 } CCFG_REGS_t;
 
 #define CCFG (*((CCFG_REGS_t *) (CCFG_BASE)))

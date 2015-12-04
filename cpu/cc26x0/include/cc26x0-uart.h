@@ -22,24 +22,24 @@ extern "C" {
  * @brief UART component registers
  */
 typedef struct {
-    uint32_reg_t DR;
+    reg32_t DR;
     union {
-        uint32_reg_t RSR;
-        uint32_reg_t ECR;
+        reg32_t RSR;
+        reg32_t ECR;
     };
-    uint32_reg_t __reserved1[4];
-    uint32_reg_t FR;
-    uint32_reg_t __reserved2[2];
-    uint32_reg_t IBRD;
-    uint32_reg_t FBRD;
-    uint32_reg_t LCRH;
-    uint32_reg_t CTL;
-    uint32_reg_t IFLS;
-    uint32_reg_t IMSC;
-    uint32_reg_t RIS;
-    uint32_reg_t MIS;
-    uint32_reg_t ICR;
-    uint32_reg_t DMACTL;
+    reg32_t __reserved1[4];
+    reg32_t FR;
+    reg32_t __reserved2[2];
+    reg32_t IBRD;
+    reg32_t FBRD;
+    reg32_t LCRH;
+    reg32_t CTL;
+    reg32_t IFLS;
+    reg32_t IMSC;
+    reg32_t RIS;
+    reg32_t MIS;
+    reg32_t ICR;
+    reg32_t DMACTL;
 } UART_REGS_t;
 
 #define UART (*((UART_REGS_t *) (UART_BASE)))

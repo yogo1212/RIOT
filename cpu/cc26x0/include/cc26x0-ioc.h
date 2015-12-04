@@ -29,7 +29,7 @@ extern "C" {
  *
  * @param[in] dio_num DIO number (0-31)
  */
-#define IOCFG_n(n)                  (*((uint32_reg_t *)(MCU_IOC_BASE + 4 * n)))
+#define IOCFG_n(n)                  (*((reg32_t *)(MCU_IOC_BASE + 4 * n)))
 
 /**
  * @name values for IOCFG
@@ -134,11 +134,11 @@ extern "C" {
 /** @} */
 
 typedef struct {
-    uint32_reg_t IOSTRMIN; /* only to be used through TI-provided API */
-    uint32_reg_t IOSTRMED; /* same */
-    uint32_reg_t IOSTRMAX; /* same */
-    uint32_reg_t IOCLATCH;
-    uint32_reg_t CLK32KCTL;
+    reg32_t IOSTRMIN; /* only to be used through TI-provided API */
+    reg32_t IOSTRMED; /* same */
+    reg32_t IOSTRMAX; /* same */
+    reg32_t IOCLATCH;
+    reg32_t CLK32KCTL;
 } AON_REGS_T;
 
 #define AON (*((AON_REGS_t *) (AON_IOC_BASE)))
