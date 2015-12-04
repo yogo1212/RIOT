@@ -29,7 +29,7 @@ extern "C" {
  *
  * @param[in] dio_num DIO number (0-31)
  */
-#define IOCFG_n(n)                  (*((reg32_t *)(MCU_IOC_BASE + 4 * n)))
+#define IOCFG_n(n)                  ((reg32_t *)(MCU_IOC_BASE + 4 * n))
 
 /**
  * @name values for IOCFG
