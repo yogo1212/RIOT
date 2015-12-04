@@ -13,6 +13,9 @@
 extern "C" {
 #endif
 
+typedef (volatile uint8_t) reg8_t;
+typedef (volatile uint32_t) reg32_t;
+
 /** @addtogroup CC26x0_cmsis CMSIS Definitions */
 /*@{*/
 
