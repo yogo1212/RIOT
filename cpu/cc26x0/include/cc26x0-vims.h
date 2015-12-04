@@ -9,16 +9,174 @@
 #ifndef CC26x0_VIMS_H
 #define CC26x0_VIMS_H
 
+
+typedef struct {
+    reg32_t __reserved1[7];
+    reg32_t STAT;
+    reg32_t CTL;
+    reg32_t __reserved2;
+    reg32_t SYSCODE_START;
+    reg32_t FLASH_SIZE;
+    reg32_t __reserved3[3];
+    reg32_t FWLOCK;
+    reg32_t FWFLAG;
+    reg32_t __reserved4[0x3EF];
+    reg32_t EFUSE;
+    reg32_t EFUSEADDR;
+    reg32_t DATAUPPER;
+    reg32_t DATALOWER;
+    reg32_t EFUSECFG;
+    reg32_t EFUSESTAT;
+    reg32_t ACC;
+    reg32_t BOUNDARY;
+    reg32_t EFUSEFLAG;
+    reg32_t EFUSEKEY;
+    reg32_t EFUSERELEASE;
+    reg32_t EFUSEPINS;
+    reg32_t EFUSECRA;
+    reg32_t EFUSEREAD;
+    reg32_t EFUSEPROGRAM;
+    reg32_t EFUSEERROR;
+    reg32_t SINGLEBIT;
+    reg32_t TWOBIT;
+    reg32_t SELFTESTCYC;
+    reg32_t SELFTESTSIGN;
+    reg32_t __reserved5[0x3ec];
+    reg32_t FRDCTL;
+    reg32_t FSPRD;
+    reg32_t FEDACCTL1;
+    reg32_t __reserved6[4];
+    reg32_t FEDACSTAT;
+    reg32_t __reserved7[4];
+    reg32_t FBPROT;
+    reg32_t FBSE;
+    reg32_t FBBUSY;
+    reg32_t FBAC;
+    reg32_t FBFALLBACK;
+    reg32_t FBPRDY;
+    reg32_t FPAC1;
+    reg32_t FPAC2;
+    reg32_t FMAC;
+    reg32_t FMSTAT;
+    reg32_t __reserved8[3];
+    reg32_t FLOCK;
+    reg32_t __reserved9[6];
+    reg32_t FVREADCT;
+    reg32_t FVHVCT1;
+    reg32_t FVHVCT2;
+    reg32_t FVHVCT3;
+    reg32_t FVNVCT;
+    reg32_t FVSLP;
+    reg32_t FVWLCT;
+    reg32_t FEFUSECTL;
+    reg32_t FEFUSESTAT;
+    reg32_t FEFUSEDATA;
+    reg32_t FSEQPMP;
+    reg32_t __reserved10[21];
+    reg32_t FBSTROBES;
+    reg32_t FPSTROBES;
+    reg32_t FBMODE;
+    reg32_t FTCR;
+    reg32_t FADDR;
+    reg32_t __reserved11[2];
+    reg32_t FTCTL;
+    reg32_t FWPWRITE0;
+    reg32_t FWPWRITE1;
+    reg32_t FWPWRITE2;
+    reg32_t FWPWRITE3;
+    reg32_t FWPWRITE4;
+    reg32_t FWPWRITE5;
+    reg32_t FWPWRITE6;
+    reg32_t FWPWRITE7;
+    reg32_t FWPWRITE_ECC;
+    reg32_t FSWSTAT;
+    reg32_t __reserved12[0x2E];
+    reg32_t FSM_GLBCTL;
+    reg32_t FSM_STATE;
+    reg32_t FSM_STAT;
+    reg32_t FSM_CMD;
+    reg32_t FSM_PE_OSU;
+    reg32_t FSM_VSTAT;
+    reg32_t FSM_PE_VSU;
+    reg32_t FSM_CMP_VSU;
+    reg32_t FSM_EX_VAL;
+    reg32_t FSM_RD_H;
+    reg32_t FSM_P_OH;
+    reg32_t FSM_ERA_OH;
+    reg32_t FSM_SAV_PPUL;
+    reg32_t FSM_PE_VH;
+    reg32_t __reserved13[2];
+    reg32_t FSM_PRG_PW;
+    reg32_t FSM_ERA_PW;
+    reg32_t __reserved14[3];
+    reg32_t FSM_SAV_ERA_PUL;
+    reg32_t FSM_TIMER;
+    reg32_t FSM_MODE;
+    reg32_t FSM_PGM;
+    reg32_t FSM_ERA;
+    reg32_t FSM_PRG_PUL;
+    reg32_t FSM_ERA_PUL;
+    reg32_t FSM_STEP_SIZE;
+    reg32_t FSM_PUL_CNTR;
+    reg32_t FSM_EC_STEP_HEIGHT;
+    reg32_t FSM_ST_MACHINE;
+    reg32_t FSM_FLES;
+    reg32_t __reserved15;
+    reg32_t FSM_WR_ENA;
+    reg32_t FSM_ACC_PP;
+    reg32_t FSM_ACC_EP;
+    reg32_t __reserved16[3];
+    reg32_t FSM_ADDR;
+    reg32_t FSM_SECTOR;
+    reg32_t FMC_REV_ID;
+    reg32_t FSM_ERR_ADDR;
+    reg32_t FSM_PGM_MAXPUL;
+    reg32_t FSM_EXECUTE;
+    reg32_t __reserved17[2];
+    reg32_t FSM_SECTOR1;
+    reg32_t FSM_SECTOR2;
+    reg32_t __reserved18[6];
+    reg32_t FSM_BSLE0;
+    reg32_t FSM_BSLE1;
+    reg32_t __reserved19[2];
+    reg32_t FSM_BSLP0;
+    reg32_t FSM_BSLP1;
+    reg32_t __reserved20[0x42];
+    reg32_t FCFG_BANK;
+    reg32_t FCFG_WRAPPER;
+    reg32_t FCFG_BNK_TYPE;
+    reg32_t __reserved21;
+    reg32_t FCFG_B0_START;
+    reg32_t FCFG_B1_START;
+    reg32_t FCFG_B2_START;
+    reg32_t FCFG_B3_START;
+    reg32_t FCFG_B4_START;
+    reg32_t FCFG_B5_START;
+    reg32_t FCFG_B6_START;
+    reg32_t FCFG_B7_START;
+    reg32_t FCFG_B0_SSIZE0;
+} FLASH_REGS_t;
+/* TODO i'd be surprised if that wouldn't contain an error */
+
 /** @addtogroup cpu_specific_peripheral_memory_map
   * @{
   */
-#define VIMS_BASE                           0x40034000 /**< base address of VIMS memory */
+#define FLASH_BASE                           0x40030000 /**< base address of FLASH memory */
 /*@}*/
+
+#define FLASH                                ((FLASH_REGS_t *)(FLASH_BASE + 0x4))
+
 
 typedef struct {
     reg32_t STAT;
     reg32_t CTL;
 } VIMS_REGS_t;
+
+/** @addtogroup cpu_specific_peripheral_memory_map
+  * @{
+  */
+#define VIMS_BASE                           0x40034000 /**< base address of VIMS memory */
+/*@}*/
 
 #define VIMS                                (*(VIMS_REGS_t *)(VIMS_BASE + 0x4))
 
