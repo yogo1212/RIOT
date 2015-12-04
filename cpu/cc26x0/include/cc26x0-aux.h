@@ -140,11 +140,6 @@ typedef struct {
 #define AUX_TIMER           ((AUX_TIMER_REGS_t *) (AUX_TIMER_BASE))
 
 
-/** @addtogroup cpu_specific_peripheral_memory_map
-  * @{
-  */
-#define AUX_SMPH_BASE               0x400C8000
-
 typedef struct {
     reg32_t SMPH0;
     reg32_t SMPH1;
@@ -156,6 +151,12 @@ typedef struct {
     reg32_t SMPH7;
     reg32_t AUTOTAKE;
 } AUX_SMPH_REGS_t;
+
+/** @addtogroup cpu_specific_peripheral_memory_map
+  * @{
+  */
+#define AUX_SMPH_BASE               0x400C8000
+/*@}*/
 
 #define AUX_SMPH ((AUX_SMPH_REGS_t *) (AUX_SMPH_BASE))
 

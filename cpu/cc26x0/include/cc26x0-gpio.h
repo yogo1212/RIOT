@@ -48,7 +48,6 @@ typedef struct {
 	reg32_t DOE;
 	reg32_t __reserved7[3];
 	reg32_t EVFLAGS;
-	reg32_t __reserved8[3];
 } GPIO_REGS_t;
 
 #define GPIO (*((GPIO_REGS_t *) (GPIO_BASE)))
