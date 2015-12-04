@@ -25,7 +25,6 @@ extern "C" {
 #define CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM   0x00000004
 
 typedef struct {
-	uint32_regs_t __reserved1[0x3EA];
 	reg32_t EXT_LF_CLK;
 	reg32_t MODE_CONF_1;
 	reg32_t SIZE_AND_DIS_FLAGS;
@@ -50,7 +49,7 @@ typedef struct {
 	reg32_t CCFG_PROT_127_96;
 } CCFG_REGS_t;
 
-#define CCFG (*((CCFG_REGS_t *) (CCFG_BASE)))
+#define CCFG ((CCFG_REGS_t *) (CCFG_BASE + 0xFA8))
 
 #ifdef __cplusplus
 } /* end extern "C" */
