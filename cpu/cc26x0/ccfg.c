@@ -7,7 +7,17 @@
  *
  */
 
-#if UPDATE_CCFG
+
+#ifndef BOOTLOADER_BACKDOOR_ENABLE
+#error "You won't be able to run to bootloader without BOOTLOADER_BACKDOOR_ENABLE - aborting"
+#endif
+
+#define __BACKDOOR_ENABLE       0xC5
+#define __BACKDOOR_PIN_UMBER    BOOTLOADER_BACKDOOR_PIN
+#define __BACKDOOR_ACTIVE_LEVEL BOOTLOADER_BACKDOOR_LEVEL
+
+#define CCFG_BL_CONFIG (__BACKDOOR_ENABLE | (__BACKDOOR_PIN_UMBER << 8) | (__BACKDOOR_ACTIVE_LEVEL << 16) | 0xC5000000)
+
 /**
  * @brief customer configuration (CCFG)
  */
@@ -25,7 +35,7 @@ const uint32_t ccfg[] = {
     0xFFFFFFFF,         //IEEE_MAC_1
     0xFFFFFFFF,         //IEEE_BLE_0
     0xFFFFFFFF,         //IEEE_BLE_1
-    0xC501FFFF,         //BL_CONFIG
+    CCFG_BL_CONFIG,     //BL_CONFIG
     0x00000101,         //ERASE_CONF
     0x00000000,         //CCFG_TI_OPTIONS
     0x00000000,         //CCFG_TAP_DAP_0
@@ -36,6 +46,5 @@ const uint32_t ccfg[] = {
     0xFFFFFFFF,         //CCFG_PROT_95_64
     0xFFFFFFFF          //CCFG_PROT_127_96
 };
-#endif
 
 /** @} */
