@@ -50,7 +50,7 @@ typedef struct {
 	reg32_t EVFLAGS;
 } GPIO_REGS_t;
 
-#define GPIO (*((GPIO_REGS_t *) (GPIO_BASE)))
+#define GPIO ((GPIO_REGS_t *) (GPIO_BASE))
 
 #ifdef __cplusplus
 } /* end extern "C" */
