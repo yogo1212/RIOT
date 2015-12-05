@@ -29,7 +29,7 @@ extern "C" {
  *
  * @param[in] dio_num DIO number (0-31)
  */
-#define IOCFG_n(n)                  ((reg32_t *)(MCU_IOC_BASE + 4 * n))
+#define IOCFG_n(n)                  (*((reg32_t *)(MCU_IOC_BASE + 4 * n)))
 
 /**
  * @name values for IOCFG
@@ -130,7 +130,7 @@ extern "C" {
 /** @addtogroup cpu_specific_peripheral_memory_map
   * @{
   */
-#define AON_IOC_BASE           (PERIPH_BASE + 0x94000) /**< always-on-IOC base address */
+#define AON_IOC_BASE            (PERIPH_BASE + 0x94000) /**< always-on-IOC base address */
 /** @} */
 
 typedef struct {
@@ -141,11 +141,11 @@ typedef struct {
     reg32_t CLK32KCTL;
 } AON_REGS_T;
 
-#define AON (*((AON_REGS_t *) (AON_IOC_BASE)))
+#define AON                     ((AON_REGS_t *) (AON_IOC_BASE))
 
-#define IOCLATCH_EN                 0x00000001 /**< IO controlled by GPIO or peripheral; kept in AON otherwise */
+#define IOCLATCH_EN             0x00000001 /**< IO controlled by GPIO or peripheral; kept in AON otherwise */
 
-#define CLK32KCTL_OEN               0x00000001 /**< don't output SCLK_LF on DIOs with PORT_ID AON_CLK32K */
+#define CLK32KCTL_OEN           0x00000001 /**< don't output SCLK_LF on DIOs with PORT_ID AON_CLK32K */
 
 
 #ifdef __cplusplus
