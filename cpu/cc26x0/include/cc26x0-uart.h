@@ -66,7 +66,7 @@ typedef struct {
 #define UART_LCHR_STP2          0x8
 #define UART_LCHR_FEN           0x10
 #define UART_LCHR_WLEN_mask     0x60
-#define UART_LCHR_WLEN          0x80
+#define UART_LCHR_SPS           0x80
 
 #define UART_CTL_UARTEN         0x1
 #define UART_CTL_LBE            0x80
