@@ -43,10 +43,10 @@ typedef struct {
 } UART_REGS_t;
 
 #define UART_DR_DATA_mask       0xFF
-#define UART_DR_FE              0x10
-#define UART_DR_PE              0x20
-#define UART_DR_BE              0x40
-#define UART_DR_OE              0x80
+#define UART_DR_FE              0x100
+#define UART_DR_PE              0x200
+#define UART_DR_BE              0x400
+#define UART_DR_OE              0x800
 
 #define UART_ECR_FE             0x1
 #define UART_ECR_PE             0x2
