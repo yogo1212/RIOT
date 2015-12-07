@@ -31,6 +31,39 @@ extern "C" {
  */
 #define IOCFG_n(n)                  (*((reg32_t *)(MCU_IOC_BASE + 4 * n)))
 
+#define DIO_0_num                   0
+#define DIO_1_num                   1
+#define DIO_2_num                   2
+#define DIO_3_num                   3
+#define DIO_4_num                   4
+#define DIO_5_num                   5
+#define DIO_6_num                   6
+#define DIO_7_num                   7
+#define DIO_8_num                   8
+#define DIO_9_num                   9
+#define DIO_10_num                  10
+#define DIO_11_num                  11
+#define DIO_12_num                  12
+#define DIO_13_num                  13
+#define DIO_14_num                  14
+#define DIO_15_num                  15
+#define DIO_16_num                  16
+#define DIO_17_num                  17
+#define DIO_18_num                  18
+#define DIO_19_num                  19
+#define DIO_20_num                  20
+#define DIO_21_num                  21
+#define DIO_22_num                  22
+#define DIO_23_num                  23
+#define DIO_24_num                  24
+#define DIO_25_num                  25
+#define DIO_26_num                  26
+#define DIO_27_num                  27
+#define DIO_28_num                  28
+#define DIO_29_num                  29
+#define DIO_30_num                  30
+#define DIO_31_num                  31
+
 /**
  * @name values for IOCFG
  * @{
