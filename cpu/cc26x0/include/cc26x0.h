@@ -81,7 +81,7 @@ typedef enum IRQn
 
 #define __CM3_REV              TODO   /**< CC26x0 core revision number ([15:8] revision number, [7:0] patch number) */
 #define __MPU_PRESENT          1      /**< CC26x0 does provide a MPU */
-#define __NVIC_PRIO_BITS       TODO   /**< CC26x0 uses 3 bits for the priority levels */
+#define __NVIC_PRIO_BITS       3      /**< CC26x0 offers priority levels from 0..7 */
 #define __Vendor_SysTickConfig 0      /**< Set to 1 if different SysTick config is used */
 
 /**
