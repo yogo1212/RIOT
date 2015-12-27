@@ -72,7 +72,7 @@ typedef enum IRQn
     AUX_ADC_IRQN          =  32, /**< 48 AUX ADC IRQ                            */
     TRNG_IRQN             =  33, /**< 49 TRNG event                             */
 
-    PERIPH_COUNT_IRQn     = (TRNG_IRQn + 1) /**< Number of peripheral IDs */
+    PERIPH_COUNT_IRQn     = (TRNG_IRQN + 1) /**< Number of peripheral IDs */
 } IRQn_Type;
 
 /**
