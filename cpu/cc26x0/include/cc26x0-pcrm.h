@@ -100,7 +100,6 @@ typedef struct {
     reg32_t RFCCLKG;
     reg32_t VIMSCLKG;
     reg32_t __reserved2[2];
-    reg32_t CLKLOADCTL;
     reg32_t SECDMACLKGR;
     reg32_t SECDMACLKGS;
     reg32_t SECDMACLKGDS;
