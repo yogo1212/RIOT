@@ -8,6 +8,8 @@
  */
 
 
+#ifdef OUTPUT_CCFG
+
 #ifndef BOOTLOADER_BACKDOOR_ENABLE
 #error "You won't be able to run to bootloader without BOOTLOADER_BACKDOOR_ENABLE - aborting"
 #endif
@@ -18,7 +20,6 @@
 
 #define CCFG_BL_CONFIG (__BACKDOOR_ENABLE | (__BACKDOOR_PIN_UMBER << 8) | (__BACKDOOR_ACTIVE_LEVEL << 16) | 0xC5000000)
 
-#ifdef OUTPUT_CCFG
 /**
  * @brief customer configuration (CCFG)
  */
