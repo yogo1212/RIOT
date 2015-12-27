@@ -56,7 +56,7 @@ typedef struct {
 #define GPT_BASE      0x40010000
 /*@}*/
 
-#define GPT_n(n)           ((GPT_REGS_t *) ((GPT_BASE) + (n * 0x1000)))
+#define GPT_n(n)            ((GPT_REGS_t *) ((GPT_BASE) + (n * 0x1000)))
 
 #ifdef __cplusplus
 } /* end extern "C" */
