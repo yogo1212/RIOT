@@ -9,12 +9,14 @@
 #ifndef CC26x0_H
 #define CC26x0_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef (volatile uint8_t) reg8_t;
-typedef (volatile uint32_t) reg32_t;
+typedef volatile uint8_t reg8_t;
+typedef volatile uint32_t reg32_t;
 
 /** @addtogroup CC26x0_cmsis CMSIS Definitions */
 /*@{*/
