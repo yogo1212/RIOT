@@ -169,28 +169,6 @@ typedef struct {
 #define PCRM ((PCRM_REGS_t *) (PCRM_BASE))
 
 
-
-#define ADDI_SEM AUX_SMPH->SMPH0
-
-/**
- * return true if interrupts have been disabled; false if they have been already
- */
-bool addi_reg_access_prepare(void)
-{
-    bool ie = !__get_PRIMASK();
-    __disable_irq();
-    while (!ADDI_SEM);
-    return ie;
-}
-
-void addi_reg_acces_finish(bool ie)
-{
-    ADDI_SEM = 1;
-    if (ie) {
-        __enable_irq();
-    }
-}
-
 #ifdef __cplusplus
 } /* end extern "C" */
 #endif
