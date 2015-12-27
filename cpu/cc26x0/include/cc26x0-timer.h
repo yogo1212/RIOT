@@ -58,6 +58,8 @@ typedef struct {
 
 #define GPT_n(n)            ((GPT_REGS_t *) ((GPT_BASE) + (n * 0x1000)))
 
+#define GPTIMER_NUMOF       1
+
 #ifdef __cplusplus
 } /* end extern "C" */
 #endif
