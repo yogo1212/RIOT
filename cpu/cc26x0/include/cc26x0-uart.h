@@ -60,13 +60,17 @@ typedef struct {
 #define UART_FR_RXFF            0x40
 #define UART_FR_TXFE            0x80
 
-#define UART_LCHR_PEN           0x1
-#define UART_LCHR_EPS           0x2
-#define UART_LCHR_RXFE          0x4
-#define UART_LCHR_STP2          0x8
-#define UART_LCHR_FEN           0x10
-#define UART_LCHR_WLEN_mask     0x60
-#define UART_LCHR_SPS           0x80
+#define UART_LCRH_PEN           0x1
+#define UART_LCRH_EPS           0x2
+#define UART_LCRH_RXFE          0x4
+#define UART_LCRH_STP2          0x8
+#define UART_LCRH_FEN           0x10
+#define UART_LCRH_WLEN_mask     0x60
+#define UART_LCRH_WLEN_5        0x0
+#define UART_LCRH_WLEN_6        0x20
+#define UART_LCRH_WLEN_7        0x40
+#define UART_LCRH_WLEN_8        0x60
+#define UART_LCRH_SPS           0x80
 
 #define UART_CTL_UARTEN         0x1
 #define UART_CTL_LBE            0x80
@@ -75,6 +79,37 @@ typedef struct {
 #define UART_CTL_RTS            0x800
 #define UART_CTL_RTSEN          0x4000
 #define UART_CTL_CTSEN          0x8000
+
+#define UART_MIS_CTSMMIS        0x1
+#define UART_MIS_RXMIS          0x10
+#define UART_MIS_TXMIS          0x20
+#define UART_MIS_RTMIS          0x40
+#define UART_MIS_FEMIS          0x80
+#define UART_MIS_PEMIS          0x100
+#define UART_MIS_BEMIS          0x200
+#define UART_MIS_OEMIS          0x400
+
+#define UART_IMSC_CTSMIM        0x2
+#define UART_IMSC_RXIM          0x10
+#define UART_IMSC_TXIM          0x20
+#define UART_IMSC_RTIM          0x40
+#define UART_IMSC_FEIM          0x80
+#define UART_IMSC_PEIM          0x100
+#define UART_IMSC_BEIM          0x200
+#define UART_IMSC_OEIM          0x400
+
+#define UART_IFLS_TXSEL_1_8     0x0
+#define UART_IFLS_TXSEL_2_8     0x1
+#define UART_IFLS_TXSEL_4_8     0x2
+#define UART_IFLS_TXSEL_6_8     0x3
+#define UART_IFLS_TXSEL_7_8     0x4
+
+#define UART_IFLS_RXSEL_1_8     0x0
+#define UART_IFLS_RXSEL_2_8     0x8
+#define UART_IFLS_RXSEL_4_8     0x10
+#define UART_IFLS_RXSEL_6_8     0x18
+#define UART_IFLS_RXSEL_7_8     0x20
+
 
 #define UART ((UART_REGS_t *) (UART_BASE))
 
