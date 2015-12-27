@@ -9,9 +9,9 @@
 #ifndef CC26x0_AUX_H
 #define CC26x0_AUX_H
 
-#include <cc26x0.h>
+#include <stdbool.h>
 
-#include <cc26x0-aux.h>
+#include "cc26x0.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -164,11 +164,11 @@ typedef struct {
 typedef struct {
     reg32_t __reserved[4];
     reg32_t ADCCTL;
-    reg32_t OB ADCFIFOSTAT;
-    reg32_t OB ADCFIFO;
-    reg32_t OB ADCTRIG;
-    reg32_t OB ISRCCTL;
-} AUX_EVTCL_REGS_t;
+    reg32_t ADCFIFOSTAT;
+    reg32_t ADCFIFO;
+    reg32_t ADCTRIG;
+    reg32_t ISRCCTL;
+} AUX_ANAIF_REGS_t;
 
 /** @addtogroup cpu_specific_peripheral_memory_map
   * @{
@@ -207,23 +207,9 @@ typedef struct {
 /**
  * return true if interrupts have been disabled; false if they have been already
  */
-__attribute__((always_inline))
-bool addi_reg_access_prepare(void)
-{
-    bool ie = !__get_PRIMASK();
-    __disable_irq();
-    while (!ADDI_SEM);
-    return ie;
-}
+bool addi_reg_access_prepare(void);
 
-__attribute__((always_inline))
-void addi_reg_acces_finish(bool ie)
-{
-    ADDI_SEM = 1;
-    if (ie) {
-        __enable_irq();
-    }
-}
+void addi_reg_acces_finish(bool ie);
 
 #ifdef __cplusplus
 } /* end extern "C" */
