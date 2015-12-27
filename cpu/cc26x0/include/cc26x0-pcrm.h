@@ -168,6 +168,8 @@ typedef struct {
 
 #define PCRM ((PCRM_REGS_t *) (PCRM_BASE))
 
+#define PCRM_CLKLOADCTL_LOAD        0x1
+#define PCRM_CLKLOADCTL_LOADDONE    0x2
 
 #ifdef __cplusplus
 } /* end extern "C" */
