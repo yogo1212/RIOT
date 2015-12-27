@@ -26,9 +26,9 @@ extern "C" {
 #define GPIO_BASE                   (PERIPH_BASE + 0x22000)
 /** @} */
 
-#define GPIO_DOUT_SET_n(n)          (GPIO->DOUT_SET = (1 << n))
-#define GPIO_DOUT_CLR_n(n)          (GPIO->DOUT_CLR = (1 << n))
-#define GPIO_DOUT_TGL_n(n)          (GPIO->DOUT_TGL = (1 << n))
+#define GPIO_DOUT_SET_n(n)          (GPIO->DOUTSET = (1 << n))
+#define GPIO_DOUT_CLR_n(n)          (GPIO->DOUTCLR = (1 << n))
+#define GPIO_DOUT_TGL_n(n)          (GPIO->DOUTTGL = (1 << n))
 
 #define GPIO_DIN_n(n)               ((GPIO->DIN >> n) & 1)
 
