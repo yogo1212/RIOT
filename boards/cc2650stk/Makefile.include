@@ -1,0 +1,24 @@
+export CPU        = cc26x0
+export CPU_MODEL ?= cc26x0f128
+
+#export PORT      ?= /dev/ttyUSB0
+#include $(RIOTBOARD)/Makefile.include.serial
+
+#export DEBUGGER = $(RIOTBOARD)/$(BOARD)/dist/debug.sh
+#export DEBUGSERVER = JLinkGDBServer -device CC2538SF53
+#export RESET = $(RIOTBOARD)/$(BOARD)/dist/reset.sh
+
+export UNIFLASH_PATH ?= missing
+
+# TODO debug probe needs to be in correct mode
+export FLASHER = $(UNIFLASH_PATH)/uniflash.sh
+# TODO is there a better variable?
+export FFLAGS  = -ccxml $(RIOTBOARD)/$(BOARD)/dist/cc26x0stk.ccxml -program $(ELFFILE)
+
+export OFLAGS    = -O ihex --gap-fill 0xff # --rename-section rom=flash
+export DEBUGGER_FLAGS = $(BINDIR) $(ELFFILE)
+export RESET_FLAGS = $(BINDIR)
+
+export OBJDUMPFLAGS += --disassemble --source --disassembler-options=force-thumb
+
+include $(RIOTBOARD)/Makefile.include.cortexm_common
