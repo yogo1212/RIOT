@@ -16,7 +16,7 @@
 extern "C" {
 #endif
 
-#define UART_BASE       (PERIPH_BASE + 0x1000)
+#define UART_BASE       (0x40001000)
 
 /**
  * @brief UART component registers

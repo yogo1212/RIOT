@@ -20,7 +20,7 @@ extern "C" {
 /** @addtogroup cpu_specific_peripheral_memory_map
   * @{
   */
-#define MCU_IOC_BASE           (PERIPH_BASE + 0x81000) /**< IOC (MCU) base address */
+#define MCU_IOC_BASE           (0x40081000) /**< IOC (MCU) base address */
 /** @} */
 
 

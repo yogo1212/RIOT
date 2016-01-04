@@ -23,7 +23,7 @@ extern "C" {
 /** @addtogroup cpu_specific_peripheral_memory_map
   * @{
   */
-#define GPIO_BASE                   (PERIPH_BASE + 0x22000)
+#define GPIO_BASE                   (0x40022000)
 /** @} */
 
 #define GPIO_DOUT_SET_n(n)          (GPIO->DOUTSET = (1 << n))

@@ -94,8 +94,6 @@ typedef enum IRQn
   * @{
   */
 #define FLASH_BASE                  0x00000000 /**< FLASH base address */
-#define SRAM_BASE                   0x20000000 /**< SRAM base address */
-#define PERIPH_BASE                 0x40000000 /**< Peripheral base address */
 /*@}*/
 
 #ifdef __cplusplus
