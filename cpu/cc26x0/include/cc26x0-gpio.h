@@ -26,12 +26,6 @@ extern "C" {
 #define GPIO_BASE                   (0x40022000)
 /** @} */
 
-#define GPIO_DOUT_SET_n(n)          (GPIO->DOUTSET = (1 << n))
-#define GPIO_DOUT_CLR_n(n)          (GPIO->DOUTCLR = (1 << n))
-#define GPIO_DOUT_TGL_n(n)          (GPIO->DOUTTGL = (1 << n))
-
-#define GPIO_DIN_n(n)               ((GPIO->DIN >> n) & 1)
-
 typedef struct {
 	reg32_t DOUT_FRAG[8];
 	reg32_t __reserved1[0x18];
