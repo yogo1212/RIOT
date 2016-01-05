@@ -38,23 +38,28 @@
 static uart_isr_ctx_t uart_config[UART_NUMOF];
 
 /*---------------------------------------------------------------------------*/
-static void reset(UART_REGS_t *u)
+static void stop(void)
 {
-    /* stop UART */
-    u->CTL &= ~UART_CTL_UARTEN;
+    UART->CTL &= ~UART_CTL_UARTEN;
 
-    u->CTL |= UART_CTL_RXE;
-    u->CTL |= UART_CTL_TXE;
+    UART->CTL |= UART_CTL_RXE;
+    UART->CTL |= UART_CTL_TXE;
 
-    /* clear error status */
-    u->ECR = 0xF;
+    while(UART->FR & UART_FR_BUSY) ;
+    UART->LCRH &= ~UART_LCRH_FEN;
+}
+static void start(void)
+{
+    UART->ECR = 0xF;
 
-    /* flush FIFOs by dis- and reenabling them */
-    u->LCRH &= ~UART_LCRH_FEN;
-    u->LCRH |= UART_LCRH_FEN;
+    UART->LCRH |= UART_LCRH_FEN;
 
-    /* start UART */
-    u->CTL |= UART_CTL_UARTEN;
+    UART->CTL |= UART_CTL_UARTEN;
+}
+static void reset(void)
+{
+    stop();
+    start();
 }
 /*---------------------------------------------------------------------------*/
 
@@ -75,7 +80,7 @@ void isr_uart(void)
 
     if (mis & (UART_MIS_OEMIS | UART_MIS_BEMIS | UART_MIS_PEMIS | UART_MIS_FEMIS)) {
         /* ISR triggered due to some error condition */
-        reset(UART_0_DEV);
+        reset();
     }
 
     if (sched_context_switch_request) {
