@@ -71,7 +71,7 @@ void isr_uart(void)
 
     while (!(UART->FR & UART_FR_RXFE)) {
         // TODO UART->DR & 0xF00 contains error-bits
-        uart_config[0].rx_cb(uart_config[0].arg, UART->DR);
+        uart_config[0].rx_cb(uart_config[0].arg, UART->DR & 0xFF);
     }
 
     if (mis & (UART_MIS_OEMIS | UART_MIS_BEMIS | UART_MIS_PEMIS | UART_MIS_FEMIS)) {
