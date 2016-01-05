@@ -163,9 +163,6 @@ static int init_base(uart_t uart, uint32_t baudrate)
     UART->CTL = UART_CTL_RXE;
     UART->CTL = UART_CTL_TXE;
 
-    while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE))
-        ;
-
     start();
 #endif // UART_0_EN
     return 0;
