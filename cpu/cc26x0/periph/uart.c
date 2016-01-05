@@ -65,8 +65,6 @@ void isr_uart(void)
 {
     uint_fast16_t mis;
 
-    /* Store the current MIS and clear all flags early, except the RTM flag.
-     * This will clear itself when we read out the entire FIFO contents */
     mis = UART->MIS;
 
     UART->ICR = 0x7F3;
@@ -76,7 +74,6 @@ void isr_uart(void)
     }
 
     if (mis & (UART_MIS_OEMIS | UART_MIS_BEMIS | UART_MIS_PEMIS | UART_MIS_FEMIS)) {
-        /* ISR triggered due to some error condition */
         reset();
     }
 
@@ -90,18 +87,15 @@ static int init_base(uart_t uart, uint32_t baudrate);
 
 int uart_init(uart_t uart, uint32_t baudrate, uart_rx_cb_t rx_cb, void *arg)
 {
-    /* initialize basic functionality */
     int res = init_base(uart, baudrate);
 
     if (res != 0) {
         return res;
     }
 
-    /* register callbacks */
     uart_config[0].rx_cb = rx_cb;
     uart_config[0].arg = arg;
 
-    /* configure interrupts and enable RX interrupt */
 #if UART_0_EN
     NVIC_SetPriority(UART0_IRQN, UART_IRQ_PRIO);
     NVIC_EnableIRQ(UART0_IRQN);
@@ -116,10 +110,6 @@ static int init_base(uart_t uart, uint32_t baudrate)
         return -1;
 
 #if UART_0_EN
-    //wait;
-    //clockconfigureset(serial);
-    //wait;
-
     IOC->CFG[UART_0_TX_DIO] = IOCFG_PORTID_UART0_TX | IOCFG_INPUT_ENABLE;
     IOC->CFG[UART_0_RX_DIO] = IOCFG_PORTID_UART0_RX;
 
@@ -132,7 +122,6 @@ static int init_base(uart_t uart, uint32_t baudrate)
 
     uart_poweron(uart);
 
-    /* disable UART */
     UART->CTL = 0;
 
 
@@ -148,9 +137,7 @@ static int init_base(uart_t uart, uint32_t baudrate)
     const float brd = (float) ref_clock / (16 * baudrate);
     UART->IBRD = brd;
     UART->FBRD = (uint16_t)((brd - (long) brd) * 64 + 0.5) & DIVFRAC_MASK;
-    //uint32_t ui32Div = (((ref_clock * 8) / baudrate) + 1) / 2;
 
-    /* 8-bit words and fifo enable */
     UART->LCRH = UART_LCRH_WLEN_8 | UART_LCRH_FEN;
 
 #ifdef UART_0_RTS_DIO
@@ -170,14 +157,12 @@ static int init_base(uart_t uart, uint32_t baudrate)
     UART->IMSC |= UART_IMSC_BEIM; /* break error */
     UART->IMSC |= UART_IMSC_FEIM; /* framing error */
 
-    /* set FIFO interrupt levels: */
     UART->IFLS = UART_IFLS_RXSEL_1_8;
     UART->IFLS = UART_IFLS_TXSEL_4_8;
 
     UART->CTL = UART_CTL_RXE;
     UART->CTL = UART_CTL_TXE;
 
-    /* wait until clocks are loaded */
     while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE))
         ;
 
@@ -199,11 +184,10 @@ void uart_write(uart_t uart, const uint8_t *data, size_t len)
 
 static void uart_power(uint32_t on)
 {
-    /* enable clock for UART in Run, Sleep, and Deep Sleep modes */
     PRCM->UARTCLKGR = on;
     PRCM->UARTCLKGS = on;
     PRCM->UARTCLKGDS = on;
-    /* reload clocks */
+
     PRCM->CLKLOADCTL = CLKLOADCTL_LOAD;
 }
 
