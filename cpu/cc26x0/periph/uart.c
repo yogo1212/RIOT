@@ -27,9 +27,6 @@
 #define DIVFRAC_NUM_BITS      6
 #define DIVFRAC_MASK          ((1 << DIVFRAC_NUM_BITS) - 1)
 
-/** @brief bytes in fifo? */
-#define uart_rx_avail() ((UART->FR & UART_FR_RXFE) == 0)
-
 /*---------------------------------------------------------------------------*/
 
 /**
@@ -74,7 +71,7 @@ void isr_uart(void)
 
     UART->ICR = 0x7F3;
 
-    while (uart_rx_avail()) {
+    while (!(UART->FR & UART_FR_RXFE)) {
         uart_config[0].rx_cb(uart_config[0].arg, UART->DR);
     }
 
