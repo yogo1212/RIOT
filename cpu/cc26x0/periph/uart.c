@@ -67,7 +67,7 @@ void isr_uart(void)
 
     mis = UART->MIS;
 
-    UART->ICR = 0x7F3;
+    UART->ICR = 0x7F2;
 
     while (!(UART->FR & UART_FR_RXFE)) {
         uart_config[0].rx_cb(uart_config[0].arg, UART->DR);
