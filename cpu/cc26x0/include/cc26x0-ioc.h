@@ -29,7 +29,11 @@ extern "C" {
  *
  * @param[in] dio_num DIO number (0-31)
  */
-#define IOCFG_n(n)                  (*((reg32_t *)(MCU_IOC_BASE + 4 * n)))
+typedef struct {
+	reg32_t CFG[32];
+} cc26x0_ioc_regs_t;
+
+#define IOC ((cc26x0_ioc_regs_t *)(MCU_IOC_BASE))
 
 #define DIO_0_num                   0
 #define DIO_1_num                   1
