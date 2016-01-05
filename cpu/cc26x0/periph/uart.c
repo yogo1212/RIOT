@@ -70,12 +70,12 @@ void isr_uart(void)
 
     /* Store the current MIS and clear all flags early, except the RTM flag.
      * This will clear itself when we read out the entire FIFO contents */
-    mis = UART_0_DEV->MIS;
+    mis = UART->MIS;
 
-    UART_0_DEV->ICR = 0x7F3;
+    UART->ICR = 0x7F3;
 
     while (uart_rx_avail()) {
-        uart_config[0].rx_cb(uart_config[0].arg, UART_0_DEV->DR);
+        uart_config[0].rx_cb(uart_config[0].arg, UART->DR);
     }
 
     if (mis & (UART_MIS_OEMIS | UART_MIS_BEMIS | UART_MIS_PEMIS | UART_MIS_FEMIS)) {
