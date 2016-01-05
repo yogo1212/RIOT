@@ -28,7 +28,7 @@ extern "C" {
 
 typedef struct {
 	reg32_t DOUT_FRAG[8];
-	reg32_t __reserved1[0x18];
+	reg32_t __reserved1[24];
 	reg32_t DOUT;
 	reg32_t __reserved2[3];
 	reg32_t DOUTSET;
