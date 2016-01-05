@@ -11,6 +11,8 @@
 #include "board.h"
 #include "cpu.h"
 
+#include "periph/uart.h"
+
 #include "cc26x0-ioc.h"
 #include "cc26x0-gpio.h"
 #include "cc26x0-prcm.h"
@@ -21,7 +23,7 @@ static void led_init(void)
     IOC->CFG[LED_GREEN_DIO] = 0;//IOCFG_QUICK_OUTPUT;
     GPIO->DOE = ((1 << LED_RED_DIO) | (1 << LED_GREEN_DIO));
 
-    GPIO->DOUTSET = (1 << LED_RED_DIO);
+    GPIO->DOUTCLR = (1 << LED_RED_DIO);
     GPIO->DOUTCLR = (1 << LED_GREEN_DIO);
 }
 
@@ -45,6 +47,12 @@ static void sleep(uint32_t s)
     }
 }
 
+static void rx_cb(void *arg, char data)
+{
+    GPIO->DOUTSET = (1 << LED_GREEN_DIO);
+    GPIO->DOUTTGL = (1 << LED_RED_DIO);
+}
+
 /**
  * @brief Initialize the SmartRF06 board
  */
@@ -58,8 +66,18 @@ void board_init(void)
     /* initialize the boards LEDs */
     led_init();
 
-    while (true) {
+    if (uart_init(0, 115200, rx_cb, NULL)) {
         GPIO->DOUTTGL = (1 << LED_RED_DIO) | (1 << LED_GREEN_DIO);
+        sleep(1000000);
+        GPIO->DOUTTGL = (1 << LED_RED_DIO) | (1 << LED_GREEN_DIO);
+        sleep(1000000);
+        GPIO->DOUTTGL = (1 << LED_RED_DIO) | (1 << LED_GREEN_DIO);
+        sleep(1000000);
+        GPIO->DOUTTGL = (1 << LED_RED_DIO) | (1 << LED_GREEN_DIO);
+    }
+
+    while (true) {
+        uart_write(0, (unsigned char *) "hallo\r\n", 7);
         sleep(1000000);
     }
 }
