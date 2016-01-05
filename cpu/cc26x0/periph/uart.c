@@ -197,6 +197,7 @@ void uart_poweron(uart_t uart)
 {
     if (uart != 0)
         return;
+
 #ifdef UART_0_EN
     uart_power(1);
     while(!(PRCM->PDSTAT0 & PDSTAT0_SERIAL_ON)) ;
@@ -207,6 +208,7 @@ void uart_poweroff(uart_t uart)
 {
     if (uart != 0)
         return;
+
 #ifdef UART_0_EN
     uart_power(0);
 #endif
