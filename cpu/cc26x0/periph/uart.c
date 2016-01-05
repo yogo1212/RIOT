@@ -115,7 +115,7 @@ int uart_init(uart_t uart, uint32_t baudrate, uart_rx_cb_t rx_cb, void *arg)
 
 static int init_base(uart_t uart, uint32_t baudrate)
 {
-    if (uart != 1)
+    if (uart != 0)
         return -1;
 
 #if UART_0_EN
@@ -193,7 +193,8 @@ static int init_base(uart_t uart, uint32_t baudrate)
 
 void uart_write(uart_t uart, const uint8_t *data, size_t len)
 {
-    /* block if the TX FIFO is full */
+    if (uart != 0)
+        return;
     for (size_t i = 0; i < len; i++) {
         while (UART->FR == UART_FR_TXFF)
             ;
@@ -213,7 +214,7 @@ static void uart_power(uint32_t on)
 
 void uart_poweron(uart_t uart)
 {
-    if (uart != 1)
+    if (uart != 0)
         return;
 #ifdef UART_0_EN
     uart_power(1);
@@ -222,7 +223,7 @@ void uart_poweron(uart_t uart)
 
 void uart_poweroff(uart_t uart)
 {
-    if (uart != 1)
+    if (uart != 0)
         return;
 #ifdef UART_0_EN
     uart_power(0);
