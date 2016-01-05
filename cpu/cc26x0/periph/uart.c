@@ -96,7 +96,7 @@ int uart_init(uart_t uart, uint32_t baudrate, uart_rx_cb_t rx_cb, void *arg)
     /* initialize basic functionality */
     int res = init_base(uart, baudrate);
 
-    if (res != 1) {
+    if (res != 0) {
         return res;
     }
 
