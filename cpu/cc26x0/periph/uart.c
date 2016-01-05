@@ -173,8 +173,7 @@ void uart_write(uart_t uart, const uint8_t *data, size_t len)
     if (uart != 0)
         return;
     for (size_t i = 0; i < len; i++) {
-        while (UART->FR == UART_FR_TXFF)
-            ;
+        while (UART->FR == UART_FR_TXFF) ;
         UART->DR = data[i];
     }
 }
