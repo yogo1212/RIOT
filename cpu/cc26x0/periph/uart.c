@@ -70,6 +70,7 @@ void isr_uart(void)
     UART->ICR = 0x7F2;
 
     while (!(UART->FR & UART_FR_RXFE)) {
+        // TODO UART->DR & 0xF00 contains error-bits
         uart_config[0].rx_cb(uart_config[0].arg, UART->DR);
     }
 
@@ -124,8 +125,7 @@ static int init_base(uart_t uart, uint32_t baudrate)
 
     UART->CTL = 0;
 
-
-    /* TODO */
+    /* TODO hello, my name is refclock */
     uint32_t ref_clock = 48000000;
     /* chose which code to use
      * uint32_t divisor = ref_clock << 2;
