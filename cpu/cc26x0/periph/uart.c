@@ -189,6 +189,8 @@ static void uart_power(uint32_t on)
 
     PRCM->CLKLOADCTL = CLKLOADCTL_LOAD;
     while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
+
+    PRCM->PDCTL0SERIAL = on;
 }
 
 void uart_poweron(uart_t uart)
@@ -197,6 +199,7 @@ void uart_poweron(uart_t uart)
         return;
 #ifdef UART_0_EN
     uart_power(1);
+    while(!(PRCM->PDSTAT0 & PDSTAT0_SERIAL_ON)) ;
 #endif
 }
 
