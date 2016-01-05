@@ -119,7 +119,6 @@ static int init_base(uart_t uart, uint32_t baudrate)
         return -1;
 
 #if UART_0_EN
-    PRCM->PDCTL0 |= PDCTL0_SERIAL_ON;
     //wait;
     //clockconfigureset(serial);
     //wait;
