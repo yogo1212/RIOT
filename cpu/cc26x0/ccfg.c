@@ -7,11 +7,12 @@
  *
  */
 
+/* TODO this code is not used. someone would have to add a section to the linker script */
 
 #ifdef OUTPUT_CCFG
 
 #ifndef BOOTLOADER_BACKDOOR_ENABLE
-#error "You won't be able to run to bootloader without BOOTLOADER_BACKDOOR_ENABLE - aborting"
+#warning "BOOTLOADER_BACKDOOR_ENABLE is not set"
 #endif
 
 #define __BACKDOOR_ENABLE       0xC5
