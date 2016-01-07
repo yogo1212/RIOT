@@ -183,8 +183,6 @@ void uart_write(uart_t uart, const uint8_t *data, size_t len)
 static void uart_power(uint32_t on)
 {
     PRCM->UARTCLKGR = on;
-    PRCM->UARTCLKGS = on;
-    PRCM->UARTCLKGDS = on;
 
     PRCM->CLKLOADCTL = CLKLOADCTL_LOAD;
     while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
