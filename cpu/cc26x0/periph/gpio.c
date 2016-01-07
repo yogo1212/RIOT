@@ -18,6 +18,7 @@
 
 #include "cc26x0-ioc.h"
 #include "cc26x0-gpio.h"
+#include "cc26x0-prcm.h"
 
 #define GPIO_ISR_CHAN_NUMOF             (32)
 
@@ -32,6 +33,17 @@ int gpio_init(gpio_t pin, gpio_dir_t dir, gpio_pp_t pullup)
 {
     if ((pin < 0) || (pin > 31))
         return -1;
+
+    if (!(PRCM->PDSTAT0 & PDSTAT0_PERIPH_ON)) {
+        PRCM->PDCTL0 |= PDCTL0_PERIPH_ON;
+        while(!(PRCM->PDSTAT0 & PDSTAT0_PERIPH_ON)) ;
+    }
+
+    if (!PRCM->GPIOCLKGR) {
+        PRCM->GPIOCLKGR |= 1;
+        PRCM->CLKLOADCTL |= CLKLOADCTL_LOAD;
+    }
+    while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
 
     IOC->CFG[pin] = 0;
 
