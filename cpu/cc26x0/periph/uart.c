@@ -35,6 +35,7 @@
 static uart_isr_ctx_t uart_config[UART_NUMOF];
 
 /*---------------------------------------------------------------------------*/
+#if UART_0_EN
 static void stop(void)
 {
     UART->CTL &= ~UART_CTL_UARTEN;
@@ -58,9 +59,7 @@ static void reset(void)
     stop();
     start();
 }
-/*---------------------------------------------------------------------------*/
 
-#if UART_0_EN
 void isr_uart(void)
 {
     uint_fast16_t mis;
