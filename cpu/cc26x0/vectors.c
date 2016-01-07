@@ -27,6 +27,7 @@ WEAK_DEFAULT void isr_svc(void);
 WEAK_DEFAULT void isr_pendsv(void);
 WEAK_DEFAULT void isr_systick(void);
 /* CC26x0 specific interrupt vectors */
+WEAK_DEFAULT void isr_edge(void);
 WEAK_DEFAULT void isr_i2c(void);
 WEAK_DEFAULT void isr_uart(void);
 WEAK_DEFAULT void isr_ssi0(void);
@@ -69,7 +70,7 @@ ISR_VECTORS const void *interrupt_vector[] = {
                                      * context switching is happening here */
     (void*) isr_systick,            /* SysTick interrupt, not used in RIOT */
     /* CC26x0 specific peripheral handlers */
-    NULL,                           /* 16 AON edge detect                        */
+    (void *) isr_edge,              /* 16 AON edge detect                        */
     (void *) isr_i2c,               /* 17 I2C                                    */
     NULL,                           /* 18 RF Command and Packet Engine 1         */
     NULL,                           /* 19 AON SpiSplave Rx, Tx and CS            */
