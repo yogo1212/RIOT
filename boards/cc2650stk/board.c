@@ -19,22 +19,8 @@
 
 static void led_init(void)
 {
-    IOC->CFG[LED_RED_DIO] = 0;//IOCFG_QUICK_OUTPUT;
-    IOC->CFG[LED_GREEN_DIO] = 0;//IOCFG_QUICK_OUTPUT;
-    GPIO->DOE = ((1 << LED_RED_DIO) | (1 << LED_GREEN_DIO));
-
-    GPIO->DOUTCLR = (1 << LED_RED_DIO);
-    GPIO->DOUTCLR = (1 << LED_GREEN_DIO);
-}
-
-static void _gpio_init(void)
-{
-    PRCM->PDCTL0 |= PDCTL0_PERIPH_ON;
-    while(!(PRCM->PDSTAT0 & PDSTAT0_PERIPH_ON)) ;
-
-    PRCM->GPIOCLKGR |= 1;
-    PRCM->CLKLOADCTL |= CLKLOADCTL_LOAD;
-    while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
+    gpio_init(LED_RED_DIO, GPIO_DIR_OUT, GPIO_NOPULL);
+    gpio_init(LED_GREEN_DIO, GPIO_DIR_OUT, GPIO_NOPULL);
 }
 
 static void sleep(uint32_t s)
@@ -60,8 +46,6 @@ void board_init(void)
 {
     /* initialize the CPU */
     cpu_init();
-
-    _gpio_init();
 
     /* initialize the boards LEDs */
     led_init();
