@@ -38,13 +38,13 @@ extern "C" {
 #define LED_RED_DIO         10
 #define LED_GREEN_DIO       15
 
-#define LED_RED_ON          GPIO_DOUT_SET_n(LED_GREEN_DIO)
-#define LED_RED_OFF         GPIO_DOUT_CLR_n(LED_GREEN_DIO)
-#define LED_RED_TOGGLE      GPIO_DOUT_TGL_n(LED_GREEN_DIO)
+#define LED_RED_ON          gpio_set(LED_RED_DIO)
+#define LED_RED_OFF         gpio_clear(LED_RED_DIO)
+#define LED_RED_TOGGLE      gpio_toggle(LED_RED_DIO)
 
-#define LED_GREEN_ON        GPIO_DOUT_SET_n(LED_GREEN_DIO)
-#define LED_GREEN_OFF       GPIO_DOUT_CLR_n(LED_GREEN_DIO)
-#define LED_GREEN_TOGGLE    GPIO_DOUT_TGL_n(LED_GREEN_DIO)
+#define LED_GREEN_ON        gpio_set(LED_GREEN_DIO)
+#define LED_GREEN_OFF       gpio_clear(LED_GREEN_DIO)
+#define LED_GREEN_TOGGLE    gpio_toggle(LED_GREEN_DIO)
 /** @} */
 
 /**
