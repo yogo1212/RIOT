@@ -57,8 +57,8 @@ extern "C" {
 #define UART_0_IRQ          UART0_IRQN
 #define UART_0_ISR          isr_uart
 /* UART 0 pin configuration */
-#define UART_0_RX_DIO       DIO_28_num
-#define UART_0_TX_DIO       DIO_29_num
+#define UART_0_RX_DIO       28
+#define UART_0_TX_DIO       29
 /** @} */
 
 /**
