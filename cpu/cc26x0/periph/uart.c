@@ -137,7 +137,7 @@ static int init_base(uart_t uart, uint32_t baudrate)
     UART->IBRD = brd;
     UART->FBRD = (uint16_t)((brd - (long) brd) * 64 + 0.5) & DIVFRAC_MASK;
 
-    UART->LCRH = UART_LCRH_WLEN_8 | UART_LCRH_FEN;
+    UART->LCRH = UART_LCRH_WLEN_8;
 
 #ifdef UART_0_RTS_DIO
     IO->CFG[UART_0_RTS_DIO_num] = IOCFG_PORTID_UART0_RTS;
