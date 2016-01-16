@@ -11,7 +11,7 @@
 #ifndef PERIPH_CONF_H_
 #define PERIPH_CONF_H_
 
-#include "cc26x0-timer.h"
+#include "cc26x0-gpt.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,7 +21,7 @@ extern "C" {
  * @name timer peripheral configuration
  * @{
  */
-#define TIMER_NUMOF         GPTIMER_NUMOF
+#define TIMER_NUMOF         GPT_NUMOF
 #define TIMER_0_EN          1
 #define TIMER_1_EN          0
 #define TIMER_2_EN          0
@@ -30,11 +30,11 @@ extern "C" {
 #define TIMER_IRQ_PRIO      1
 
 /* Timer 0 configuration */
-#define TIMER_0_DEV         GPTIMER0
+#define TIMER_0_DEV         GPT0
 #define TIMER_0_CHANNELS    NUM_CHANNELS_PER_GPTIMER
 #define TIMER_0_MAX_VALUE   0xffffffff
-#define TIMER_0_IRQn_1      GPTIMER_0A_IRQn
-#define TIMER_0_IRQn_2      GPTIMER_0B_IRQn
+#define TIMER_0_IRQn_1      GPTIMER_0A_IRQN
+#define TIMER_0_IRQn_2      GPTIMER_0B_IRQN
 #define TIMER_0_ISR_1       isr_timer0_chan0
 #define TIMER_0_ISR_2       isr_timer0_chan1
 /** @} */
