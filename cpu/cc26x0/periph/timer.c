@@ -1,19 +1,11 @@
-/*
- * Copyright (C) 2014 Loci Controls Inc.
- *
- * This file is subject to the terms and conditions of the GNU Lesser
- * General Public License v2.1. See the file LICENSE in the top level
- * directory for more details.
- */
-
 /**
  * @ingroup     driver_periph
  * @{
  *
  * @file
- * @brief       Low-level timer driver implementation for the CC2538 CPU
+ * @brief       low-level timer driver implementation for the CC2538 CPU
  *
- * @author      Ian Martin <ian@locicontrols.com>
+ * @author      Leon M. George <leon@georgemail.eu>
  *
  * @}
  */
@@ -28,47 +20,37 @@
 #include "periph/timer.h"
 #include "periph_conf.h"
 
-#define USEC_PER_SEC             1000000 /**< Conversion factor between seconds and microseconds */
+#include "cc26x0-prcm.h"
 
 typedef struct {
     void (*cb)(int);
 } timer_conf_t;
 
-/**
- * @brief Timer state memory
- */
 timer_conf_t config[TIMER_NUMOF];
 
-
-/**
- * @brief Setup the given timer
- *
- */
 int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
 {
-    cc2538_gptimer_t *gptimer;
-    unsigned int gptimer_num;
+    GPT_REGS_t *gpt;
 
-    /* select the timer and enable the timer specific peripheral clocks */
     switch (dev) {
 #if TIMER_0_EN
         case TIMER_0:
-            gptimer = TIMER_0_DEV;
+            gpt = TIMER_0_DEV;
             break;
 #endif
 #if TIMER_1_EN
         case TIMER_1:
-            gptimer = TIMER_1_DEV;
+            gpt = TIMER_1_DEV;
             break;
 #endif
 #if TIMER_2_EN
         case TIMER_2:
-            gptimer = TIMER_2_DEV;
+            gpt = TIMER_2_DEV;
             break;
 #endif
 #if TIMER_3_EN
         case TIMER_3:
-            gptimer = TIMER_3_DEV;
+            gpt = TIMER_3_DEV;
             break;
 #endif
 
@@ -77,23 +59,22 @@ int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
             return -1;
     }
 
-    gptimer_num = ((uintptr_t)gptimer - (uintptr_t)GPTIMER0) / 0x1000;
+    unsigned int gpt_num = ((uintptr_t) gpt - (uintptr_t) GPT0_BASE) / 0x1000;
 
-    /* Save the callback function: */
     config[dev].cb = callback;
 
-    /* Enable the clock for this timer: */
-    SYS_CTRL_RCGCGPT |= (1 << gptimer_num);
+    PRCM->GPTCLKGR |= (1 << gpt_num);
+    PRCM->GPTCLKGS |= (1 << gpt_num);
+    PRCM->CLKLOADCTL = CLKLOADCTL_LOAD;
+    while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
 
-    /* Disable this timer before configuring it: */
-    gptimer->CTL = 0;
+    gpt->CTL = 0;
 
-    gptimer->CFG  = GPTMCFG_16_BIT_TIMER;
-    gptimer->TAMR = GPTIMER_PERIODIC_MODE;
-    gptimer->TAMRbits.TACDIR = 1; /**< Count up */
+    gpt->CFG  = GPT_CFG_32T;
+    gpt->TAMR = GPT_TXMR_TXMR_PERIODIC | GPT_TXMR_TXCDIR_UP;
 
     /* Set the prescale register for the desired frequency: */
-    gptimer->TAPR = RCOSC16M_FREQ / (ticks_per_us * USEC_PER_SEC) - 1;
+    gpt->TAPR = RCOSC16M_FREQ / (ticks_per_us * USEC_PER_SEC) - 1;
 
     /* Enable interrupts for given timer: */
     timer_irq_enable(dev);
