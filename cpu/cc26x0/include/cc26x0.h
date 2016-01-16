@@ -79,10 +79,12 @@ typedef enum IRQn
  * @brief Configuration of the Cortex-M3 processor and core peripherals
  */
 
-#define __CM3_REV              TODO   /**< CC26x0 core revision number ([15:8] revision number, [7:0] patch number) */
 #define __MPU_PRESENT          1      /**< CC26x0 does provide a MPU */
 #define __NVIC_PRIO_BITS       3      /**< CC26x0 offers priority levels from 0..7 */
 #define __Vendor_SysTickConfig 0      /**< Set to 1 if different SysTick config is used */
+
+#define RCOSC48M_FREQ               48000000
+#define RCOSC24M_FREQ               24000000
 
 /**
  * @brief CMSIS includes

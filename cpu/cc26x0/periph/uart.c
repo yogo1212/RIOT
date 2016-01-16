@@ -124,16 +124,14 @@ static int init_base(uart_t uart, uint32_t baudrate)
 
     UART->CTL = 0;
 
-    /* TODO hello, my name is refclock */
-    uint32_t ref_clock = 48000000;
     /* chose which code to use
-     * uint32_t divisor = ref_clock << 2;
+     * uint32_t divisor = RCOSC48M_FREQ << 2;
      * divisor += baudrate / 2; // potentially avoid rounding error
      * divisor /= baudrate;
      * UART->IBRD = divisor >> DIVFRAC_NUM_BITS;
      * UART->FBRD = divisor & DIVFRAC_MASK;
      */
-    const float brd = (float) ref_clock / (16 * baudrate);
+    const float brd = (float) RCOSC48M_FREQ / (16 * baudrate);
     UART->IBRD = brd;
     UART->FBRD = (uint16_t)((brd - (long) brd) * 64 + 0.5) & DIVFRAC_MASK;
 
