@@ -113,7 +113,7 @@ void gpio_irq_disable(gpio_t pin)
 
 int gpio_read(gpio_t pin)
 {
-    return GPIO->DIN & (1 << pin);
+    return (GPIO->DIN >> pin) & 1;
 }
 
 void gpio_set(gpio_t pin)
