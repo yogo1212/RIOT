@@ -33,6 +33,7 @@ extern "C" {
 #define TIMER_0_DEV         GPT0
 #define TIMER_0_CHANNELS    NUM_CHANNELS_PER_GPTIMER
 #define TIMER_0_MAX_VALUE   0xffffffff
+/* do these really belong to the board? */
 #define TIMER_0_IRQn_1      GPTIMER_0A_IRQN
 #define TIMER_0_IRQn_2      GPTIMER_0B_IRQN
 #define TIMER_0_ISR_1       isr_timer0_chan0
