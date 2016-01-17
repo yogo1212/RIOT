@@ -27,10 +27,11 @@ typedef struct {
 } timer_conf_t;
 
 timer_conf_t config[TIMER_NUMOF];
+#define usecs_per_sec        (1000 * 1000)
 
-int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
+GPT_REG_t *select_gpt(tim_t dev)
 {
-    GPT_REGS_t *gpt;
+    GPT_REG_t *gpt = NULL;
 
     switch (dev) {
 #if TIMER_0_EN
@@ -53,10 +54,19 @@ int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
             gpt = TIMER_3_DEV;
             break;
 #endif
-
-        case TIMER_UNDEFINED:
         default:
-            return -1;
+            break;
+    }
+
+    return gpt;
+}
+
+int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
+{
+    GPT_REG_t *gpt = select_gpt(dev);
+
+    if (!gpt) {
+        return -1;
     }
 
     unsigned int gpt_num = ((uintptr_t) gpt - (uintptr_t) GPT0_BASE) / 0x1000;
@@ -72,15 +82,14 @@ int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
 
     gpt->CFG  = GPT_CFG_32T;
     gpt->TAMR = GPT_TXMR_TXMR_PERIODIC | GPT_TXMR_TXCDIR_UP;
+    gpt->TBMR = GPT_TXMR_TXMR_PERIODIC | GPT_TXMR_TXCDIR_UP;
 
-    /* Set the prescale register for the desired frequency: */
-    gpt->TAPR = RCOSC16M_FREQ / (ticks_per_us * USEC_PER_SEC) - 1;
+    gpt->TAPR = RCOSC48M_FREQ / (ticks_per_us * usecs_per_sec) - 1;
+    gpt->TBPR = RCOSC48M_FREQ / (ticks_per_us * usecs_per_sec) - 1;
 
-    /* Enable interrupts for given timer: */
     timer_irq_enable(dev);
 
-    /* Enable the timer: */
-    gptimer->CTLbits.TAEN = 1;
+    gpt->CTL |= GPT_CTL_TAEN | GPT_CTL_TBEN;
 
     return 0;
 }
@@ -92,43 +101,19 @@ int timer_set(tim_t dev, int channel, unsigned int timeout)
 
 int timer_set_absolute(tim_t dev, int channel, unsigned int value)
 {
-    cc2538_gptimer_t *gptimer;
+    GPT_REG_t *gpt = select_gpt(dev);
 
-    /* get timer base register address */
-    switch (dev) {
-#if TIMER_0_EN
-        case TIMER_0:
-            gptimer = TIMER_0_DEV;
-            break;
-#endif
-#if TIMER_1_EN
-        case TIMER_1:
-            gptimer = TIMER_1_DEV;
-            break;
-#endif
-#if TIMER_2_EN
-        case TIMER_2:
-            gptimer = TIMER_2_DEV;
-            break;
-#endif
-#if TIMER_3_EN
-        case TIMER_3:
-            gptimer = TIMER_3_DEV;
-            break;
-#endif
-        case TIMER_UNDEFINED:
-        default:
-            return -1;
+    if (!gpt) {
+        return -1;
     }
 
-    /* set timeout value */
     switch (channel) {
         case 0:
-            gptimer->TAILR = value;
+            gpt->TAILR = value;
             break;
 
         case 1:
-            gptimer->TBILR = value;
+            gpt->TBILR = value;
             break;
 
         default:
@@ -140,43 +125,19 @@ int timer_set_absolute(tim_t dev, int channel, unsigned int value)
 
 int timer_clear(tim_t dev, int channel)
 {
-    cc2538_gptimer_t *gptimer;
+    GPT_REG_t *gpt = select_gpt(dev);
 
-    /* get timer base register address */
-    switch (dev) {
-#if TIMER_0_EN
-        case TIMER_0:
-            gptimer = TIMER_0_DEV;
-            break;
-#endif
-#if TIMER_1_EN
-        case TIMER_1:
-            gptimer = TIMER_1_DEV;
-            break;
-#endif
-#if TIMER_2_EN
-        case TIMER_2:
-            gptimer = TIMER_2_DEV;
-            break;
-#endif
-#if TIMER_3_EN
-        case TIMER_3:
-            gptimer = TIMER_3_DEV;
-            break;
-#endif
-
-        case TIMER_UNDEFINED:
-        default:
-            return -1;
+    if (!gpt) {
+        return -1;
     }
 
     switch (channel) {
         case 0:
-            gptimer->CTLbits.TAEN = 0;
+            gpt->CTL &= (~GPT_CTL_TAEN);
             break;
 
         case 1:
-            gptimer->CTLbits.TBEN = 0;
+            gpt->CTL &= (~GPT_CTL_TBEN);
             break;
 
         default:
@@ -186,103 +147,38 @@ int timer_clear(tim_t dev, int channel)
     return 1;
 }
 
-/*
- * The timer channels 1 and 2 are configured to run with the same speed and
- * have the same value (they run in parallel), so only on of them is returned.
- */
 unsigned int timer_read(tim_t dev)
 {
-    switch (dev) {
-#if TIMER_0_EN
-        case TIMER_0:
-            return TIMER_0_DEV->TAR;
-#endif
-#if TIMER_1_EN
-        case TIMER_1:
-            return TIMER_1_DEV->TAR;
-#endif
-#if TIMER_2_EN
-        case TIMER_2:
-            return TIMER_2_DEV->TAR;
-#endif
-#if TIMER_3_EN
-        case TIMER_3:
-            return TIMER_3_DEV->TAR;
-#endif
+    GPT_REG_t *gpt = select_gpt(dev);
 
-        case TIMER_UNDEFINED:
-        default:
-            return 0;
+    if (!gpt) {
+        return 0;
     }
+
+    return gpt->TAR;
 }
 
-/*
- * For stopping the counting of all channels.
- */
 void timer_stop(tim_t dev)
 {
-    switch (dev) {
-#if TIMER_0_EN
-        case TIMER_0:
-            TIMER_0_DEV->CTLbits.TAEN = 0;
-            TIMER_0_DEV->CTLbits.TBEN = 0;
-            break;
-#endif
-#if TIMER_1_EN
-        case TIMER_1:
-            TIMER_1_DEV->CTLbits.TAEN = 0;
-            TIMER_1_DEV->CTLbits.TBEN = 0;
-            break;
-#endif
-#if TIMER_2_EN
-        case TIMER_2:
-            TIMER_2_DEV->CTLbits.TAEN = 0;
-            TIMER_2_DEV->CTLbits.TBEN = 0;
-            break;
-#endif
-#if TIMER_3_EN
-        case TIMER_3:
-            TIMER_3_DEV->CTLbits.TAEN = 0;
-            TIMER_3_DEV->CTLbits.TBEN = 0;
-            break;
-#endif
+    GPT_REG_t *gpt = select_gpt(dev);
 
-        case TIMER_UNDEFINED:
-            break;
+    if (!gpt) {
+        return;
     }
+
+    gpt->CTL &= (~GPT_CTL_TAEN);
+    gpt->CTL &= (~GPT_CTL_TBEN);
 }
 
 void timer_start(tim_t dev)
 {
-    switch (dev) {
-#if TIMER_0_EN
-        case TIMER_0:
-            TIMER_0_DEV->CTLbits.TAEN = 1;
-            TIMER_0_DEV->CTLbits.TBEN = 1;
-            break;
-#endif
-#if TIMER_1_EN
-        case TIMER_1:
-            TIMER_1_DEV->CTLbits.TAEN = 1;
-            TIMER_1_DEV->CTLbits.TBEN = 1;
-            break;
-#endif
-#if TIMER_2_EN
-        case TIMER_2:
-            TIMER_2_DEV->CTLbits.TAEN = 1;
-            TIMER_2_DEV->CTLbits.TBEN = 1;
-            break;
-#endif
-#if TIMER_3_EN
-        case TIMER_3:
-            TIMER_3_DEV->CTLbits.TAEN = 1;
-            TIMER_3_DEV->CTLbits.TBEN = 1;
-            break;
-#endif
+    GPT_REG_t *gpt = select_gpt(dev);
 
-        case TIMER_UNDEFINED:
-            break;
+    if (!gpt) {
+        return;
     }
+
+    gpt->CTL |= (GPT_CTL_TAEN | GPT_CTL_TBEN);
 }
 
 void timer_irq_enable(tim_t dev)

@@ -61,12 +61,12 @@ typedef struct {
 	reg32_t __reserved2[976];
 	reg32_t VERSION;
 	reg32_t ANDCCP;
-} GPT_REGS_t;
+} GPT_REG_t;
 
-#define GPT0 ((GPT_REGS_t *) (GPT0_BASE))
-#define GPT1 ((GPT_REGS_t *) (GPT1_BASE))
-#define GPT2 ((GPT_REGS_t *) (GPT2_BASE))
-#define GPT3 ((GPT_REGS_t *) (GPT3_BASE))
+#define GPT0 ((GPT_REG_t *) (GPT0_BASE))
+#define GPT1 ((GPT_REG_t *) (GPT1_BASE))
+#define GPT2 ((GPT_REG_t *) (GPT2_BASE))
+#define GPT3 ((GPT_REG_t *) (GPT3_BASE))
 
 #define GPT_CFG_32T         0
 #define GPT_CFG_32RTC       1
