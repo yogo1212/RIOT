@@ -31,6 +31,11 @@ extern "C" {
 #define STDIO_RX_BUFSIZE    (64U)
 /** @} */
 
+
+#define BUTTON1_DIO         4
+#define BUTTON2_DIO         0
+
+
 /**
  * @name macros for controlling the on-board LEDs.
  * @{
