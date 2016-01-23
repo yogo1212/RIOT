@@ -27,7 +27,7 @@ typedef struct {
 } timer_conf_t;
 
 timer_conf_t config[TIMER_NUMOF];
-#define usecs_per_sec        (1000 * 1000)
+#define USECS_PER_SEC        (1000 * 1000)
 
 GPT_REG_t *select_gpt(tim_t dev)
 {
@@ -84,8 +84,8 @@ int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
     gpt->TAMR = GPT_TXMR_TXMR_PERIODIC | GPT_TXMR_TXCDIR_UP;
     gpt->TBMR = GPT_TXMR_TXMR_PERIODIC | GPT_TXMR_TXCDIR_UP;
 
-    gpt->TAPR = RCOSC48M_FREQ / (ticks_per_us * usecs_per_sec) - 1;
-    gpt->TBPR = RCOSC48M_FREQ / (ticks_per_us * usecs_per_sec) - 1;
+    gpt->TAPR = RCOSC48M_FREQ / (ticks_per_us * USECS_PER_SEC) - 1;
+    gpt->TBPR = RCOSC48M_FREQ / (ticks_per_us * USECS_PER_SEC) - 1;
 
     timer_irq_enable(dev);
 
