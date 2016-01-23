@@ -80,7 +80,7 @@ int timer_init(tim_t dev, unsigned int ticks_per_us, void (*callback)(int))
 
     gpt->CTL = 0;
 
-    gpt->CFG  = GPT_CFG_32T;
+    gpt->CFG  = GPT_CFG_16T;
     gpt->TAMR = GPT_TXMR_TXMR_PERIODIC | GPT_TXMR_TXCDIR_UP;
     gpt->TBMR = GPT_TXMR_TXMR_PERIODIC | GPT_TXMR_TXCDIR_UP;
 
