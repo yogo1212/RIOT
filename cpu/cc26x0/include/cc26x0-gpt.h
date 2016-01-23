@@ -181,7 +181,8 @@ typedef struct {
 #define GPT_DMAEV_CBEDMAEN          0x00000400
 #define GPT_DMAEV_TBMDMAEN          0x00000800
 
-#define GPT_NUMOF       1
+#define GPT_NUMOF               1
+#define NUM_CHANNELS_PER_GPT    2
 
 #ifdef __cplusplus
 } /* end extern "C" */
