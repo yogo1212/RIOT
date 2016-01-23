@@ -110,10 +110,12 @@ int timer_set_absolute(tim_t dev, int channel, unsigned int value)
     switch (channel) {
         case 0:
             gpt->TAILR = value;
+            gpt->IMR |= GPT_IMR_TATOIM;
             break;
 
         case 1:
             gpt->TBILR = value;
+            gpt->IMR |= GPT_IMR_TBTOIM;
             break;
 
         default:
@@ -257,90 +259,73 @@ void timer_irq_disable(tim_t dev)
     }
 }
 
-#if TIMER_0_EN
-void TIMER_0_ISR_1(void)
+static void _interrupt(tim_t dev, int chan)
 {
-    if (config[0].cb != NULL) config[0].cb(0);
+    LED_RED_ON;
+
+    GPT_REG_t *gpt = select_gpt(dev);
+
+    gpt->ICLR = gpt->RIS | gpt->MIS;
+
+    if (config[0].cb != NULL) config[0].cb(chan);
 
     if (sched_context_switch_request) {
         thread_yield();
     }
+}
 
+#if TIMER_0_EN
+void TIMER_0_ISR_1(void)
+{
+    GPT0->IMR &= ~GPT_IMR_TATOIM;
+    _interrupt(TIMER_0, 0);
 }
 
 void TIMER_0_ISR_2(void)
 {
-    if (config[0].cb != NULL) config[0].cb(1);
-
-    if (sched_context_switch_request) {
-        thread_yield();
-    }
-
+    GPT0->IMR &= ~GPT_IMR_TBTOIM;
+    _interrupt(TIMER_0, 1);
 }
 #endif /* TIMER_0_EN */
 
 #if TIMER_1_EN
 void TIMER_1_ISR_1(void)
 {
-    if (config[1].cb != NULL) config[1].cb(0);
-
-    if (sched_context_switch_request) {
-        thread_yield();
-    }
-
+    GPT1->IMR &= ~GPT_IMR_TATOIM;
+    _interrupt(TIMER_1, 0);
 }
 
 void TIMER_1_ISR_2(void)
 {
-    if (config[1].cb != NULL) config[1].cb(1);
-
-    if (sched_context_switch_request) {
-        thread_yield();
-    }
-
+    GPT1->IMR &= ~GPT_IMR_TBTOIM;
+    _interrupt(TIMER_1, 1);
 }
 #endif /* TIMER_1_EN */
 
 #if TIMER_2_EN
 void TIMER_2_ISR_1(void)
 {
-    if (config[2].cb != NULL) config[2].cb(0);
-
-    if (sched_context_switch_request) {
-        thread_yield();
-    }
-
+    GPT2->IMR &= ~GPT_IMR_TATOIM;
+    _interrupt(TIMER_2, 0);
 }
 
 void TIMER_2_ISR_2(void)
 {
-    if (config[2].cb != NULL) config[2].cb(1);
-
-    if (sched_context_switch_request) {
-        thread_yield();
-    }
-
+    GPT2->IMR &= ~GPT_IMR_TBTOIM;
+    _interrupt(TIMER_2, 1);
 }
 #endif /* TIMER_2_EN */
 
 #if TIMER_3_EN
 void TIMER_3_ISR_1(void)
 {
-    if (config[3].cb != NULL) config[3].cb(0);
-
-    if (sched_context_switch_request) {
-        thread_yield();
-    }
-
+    GPT3->IMR &= ~GPT_IMR_TATOIM;
+    _interrupt(TIMER_3, 0);
 }
 
 void TIMER_3_ISR_2(void)
 {
-    if (config[3].cb != NULL) config[3].cb(1);
-
-    if (sched_context_switch_request) {
-        thread_yield();
-    }
-
+    GPT3->IMR &= ~GPT_IMR_TBTOIM;
+    _interrupt(TIMER_3, 1);
 }
 #endif /* TIMER_3_EN */
