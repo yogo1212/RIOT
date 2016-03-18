@@ -32,7 +32,7 @@ typedef struct {
 
 static gpio_ctx_t gpio_chan[GPIO_ISR_CHAN_NUMOF];
 
-int gpio_init(gpio_t pin, gpio_dir_t dir, gpio_pp_t pullup)
+int gpio_init(gpio_t pin, gpio_mode_t mode)
 {
     if ((pin < 0) || (pin > 31))
         return -1;
@@ -44,24 +44,20 @@ int gpio_init(gpio_t pin, gpio_dir_t dir, gpio_pp_t pullup)
     PRCM->CLKLOADCTL |= CLKLOADCTL_LOAD;
     while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
 
-    IOC->CFG[pin] = 0;
+    IOC->CFG[pin] = mode;
 
-    if (dir == GPIO_DIR_OUT) {
+    if (!(mode & IOCFG_INPUT_ENABLE)) {
         GPIO->DOE |= (1 << pin);
         GPIO->DOUTCLR = (1 << pin);
-    }
-    else {
-        IOC->CFG[pin] |= pullup;
-        IOC->CFG[pin] |= IOCFG_INPUT_ENABLE;
     }
     return 0;
 }
 
 int gpio_init_int(gpio_t pin,
-                   gpio_pp_t pullup, gpio_flank_t flank,
+                   gpio_mode_t mode, gpio_flank_t flank,
                    gpio_cb_t cb, void *arg)
 {
-    int init = gpio_init(pin, GPIO_DIR_IN, pullup);
+    int init = gpio_init(pin, mode);
     if (init != 0)
         return init;
 
