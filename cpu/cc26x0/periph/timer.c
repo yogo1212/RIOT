@@ -99,7 +99,7 @@ int timer_clear(tim_t tim, int channel)
 
 unsigned int timer_read(tim_t tim)
 {
-    return dev(tim)->TAR;
+    return dev(tim)->TAV & 0xFFFF;
 }
 
 void timer_stop(tim_t tim)
