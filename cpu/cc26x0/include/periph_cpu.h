@@ -25,27 +25,28 @@
 extern "C" {
 #endif
 
+/**
+ * @brief   Override GPIO mode values
+ */
 #define HAVE_GPIO_MODE_T
 typedef enum {
-    GPIO_IN    = IOCFG_INPUT_ENABLE,
-    GPIO_IN_PD = IOCFG_INPUT_ENABLE | IOCFG_PULLCTL_DOWN,
-    GPIO_IN_PU = IOCFG_INPUT_ENABLE | IOCFG_PULLCTL_UP,
-    GPIO_OUT   = 0,
+    GPIO_IN    = (IOCFG_INPUT_ENABLE | IOCFG_PULLCTL_OFF),      /**< input w/o pull R */
+    GPIO_IN_PD = (IOCFG_INPUT_ENABLE | IOCFG_PULLCTL_DOWN),     /**< input with pull-down */
+    GPIO_IN_PU = (IOCFG_INPUT_ENABLE | IOCFG_PULLCTL_UP),       /**< input with pull-up */
+    GPIO_OUT   = (IOCFG_PULLCTL_OFF),                           /**< push-pull output */
+    GPIO_OD    = (IOCFG_IOMODE_OPEN_DRAIN | IOCFG_PULLCTL_OFF), /**< open-drain w/o pull R */
+    GPIO_OD_PU = (IOCFG_IOMODE_OPEN_DRAIN | IOCFG_PULLCTL_UP)   /**< open-drain with pull-up */
 } gpio_mode_t;
 
+/**
+ * @brief   Override GPIO flank values
+ */
 #define HAVE_GPIO_FLANK_T
 typedef enum {
     GPIO_FALLING = IOCFG_EDGEDET_FALLING,
     GPIO_RISING = IOCFG_EDGEDET_RISING,
     GPIO_BOTH = IOCFG_EDGEDET_BOTH
 } gpio_flank_t;
-
-#define HAVE_GPIO_PP_T
-typedef enum {
-    GPIO_NOPULL = 0,
-    GPIO_PULLDOWN = IOCFG_PULLCTL_DOWN,
-    GPIO_PULLUP = IOCFG_PULLCTL_UP,
-} gpio_pp_t;
 
 /**
  * @brief   Timer configuration options
