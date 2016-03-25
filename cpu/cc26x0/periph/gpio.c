@@ -11,7 +11,7 @@
  * @{
  *
  * @file
- * @brief       low-level GPIO driver implementation
+ * @brief       Low-level GPIO driver implementation
  *
  * @author      Leon M. George <leon@georgemail.eu>
  *
@@ -23,38 +23,34 @@
 #include "thread.h"
 #include "periph/gpio.h"
 
-#define GPIO_ISR_CHAN_NUMOF             (32)
+#define GPIO_ISR_CHAN_NUMOF     (32)
 
-typedef struct {
-    void (*cb)(void *arg);
-    void *arg;
-} gpio_ctx_t;
+#define DOE_SHIFT               (29U)
 
-static gpio_ctx_t gpio_chan[GPIO_ISR_CHAN_NUMOF];
+static gpio_isr_ctx_t gpio_chan[GPIO_ISR_CHAN_NUMOF];
 
 int gpio_init(gpio_t pin, gpio_mode_t mode)
 {
     if ((pin < 0) || (pin > 31))
         return -1;
 
+    /* enable GPIO clock */
     PRCM->PDCTL0 |= PDCTL0_PERIPH_ON;
     while(!(PRCM->PDSTAT0 & PDSTAT0_PERIPH_ON)) ;
-
     PRCM->GPIOCLKGR |= 1;
     PRCM->CLKLOADCTL |= CLKLOADCTL_LOAD;
     while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
 
+    /* configure the GPIO mode */
     IOC->CFG[pin] = mode;
+    GPIO->DOE &= ~(1 << pin);
+    GPIO->DOE |=  ((~(mode >> DOE_SHIFT) & 0x1) << pin);
+    GPIO->DOUTCLR = (1 << pin);
 
-    if (!(mode & IOCFG_INPUT_ENABLE)) {
-        GPIO->DOE |= (1 << pin);
-        GPIO->DOUTCLR = (1 << pin);
-    }
     return 0;
 }
 
-int gpio_init_int(gpio_t pin,
-                   gpio_mode_t mode, gpio_flank_t flank,
+int gpio_init_int(gpio_t pin, gpio_mode_t mode, gpio_flank_t flank,
                    gpio_cb_t cb, void *arg)
 {
     int init = gpio_init(pin, mode);
