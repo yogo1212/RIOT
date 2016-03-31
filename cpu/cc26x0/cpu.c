@@ -17,13 +17,38 @@
  * @}
  */
 
-#include "cpu.h"
+ #include "cpu.h"
+ #include "periph_conf.h"
 
-/**
- * @brief Initialize the CPU, set IRQ priorities
- */
-void cpu_init(void)
-{
-    /* initialize the Cortex-M core */
-    cortexm_init();
-}
+#ifndef HF_CLOCK_SOURCE
+#define HF_CLOCK_SOURCE DDI_0_OSC_CTL0_SCLK_HF_SRC_SEL_RCOSC /* set 48MHz RCOSC */
+#endif
+#ifndef LF_CLOCK_SOURCE
+#define LF_CLOCK_SOURCE DDI_0_OSC_CTL0_SCLK_LF_SRC_SEL_HF_RCOSC /* set 31.25kHz derived from 48MHz RCOSC */
+#endif
+
+ static void cpu_clock_init(void);
+
+ /**
+  * @brief Initialize the CPU, set IRQ priorities
+  */
+ void cpu_init(void)
+ {
+     /* initialize the Cortex-M core */
+     cortexm_init();
+
+     /*initialize the system clock*/
+     cpu_clock_init();
+ }
+
+ /**
+   *@brief Configure the MCU system clock
+   */
+ static void cpu_clock_init(void)
+ {
+   AON_WUC->AUXCTL |= AUXCTL_AUX_FORCE_ON; /* power on AUX_PD */
+   while(!(AON_WUC->PWRSTAT & PWRSTAT_AUX_PD_ON)); /* wait for AUX_PD to be powered on */
+   AUX_WUC->MODCLKEN0 |= MODCLKEN0_AUX_DDI0_OSC_EN; /*turn on oscillator interface clock */
+
+   DDI_0_OSC->CTL0 |= HF_CLOCK_SOURCE | LF_CLOCK_SOURCE; /* configure HF and LF clocks */
+ }
