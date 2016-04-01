@@ -43,7 +43,8 @@ typedef struct {
     reg32_t STAT2;
 } ddi0_osc_regs_t;
 
-#define DDI_0_OSC_CTL0_SCLK_HF_SRC_SEL              0x1 /* HF XOSC (RCOSC elsewise) */
+#define DDI_0_OSC_CTL0_SCLK_HF_SRC_SEL_RCOSC        0x0
+#define DDI_0_OSC_CTL0_SCLK_HF_SRC_SEL_XOSC         0x1
 #define DDI_0_OSC_CTL0_SCLK_MF_SRC_SEL              0x2
 #define DDI_0_OSC_CTL0_SCLK_LF_SRC_SEL_mask         0x6
 #define DDI_0_OSC_CTL0_SCLK_LF_SRC_SEL_HF_RCOSC     0x0
