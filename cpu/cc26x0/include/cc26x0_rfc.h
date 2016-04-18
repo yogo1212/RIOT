@@ -42,7 +42,6 @@ typedef struct {
 #define RFC_RAT ((cc26x0_rfc_rat_regs_t *)(RFC_RAT_BASE))
 
 
-
 /** @addtogroup cpu_specific_peripheral_memory_map
  * @{
  */
@@ -109,8 +108,6 @@ typedef struct {
 #define RFC_DBELL_CMDSTA_RESULT_PARERROR        0x87
 #define RFC_DBELL_CMDSTA_RESULT_QUEUEERROR      0x88
 #define RFC_DBELL_CMDSTA_RESULT_QUEUEBUSY       0x89
-
-
 
 #define RFC_DBELL_RFHWIFG_FSCA          0x00000002
 #define RFC_DBELL_RFHWIFG_MDMDONE       0x00000004
@@ -243,14 +240,11 @@ typedef struct {
 #define RFC_DBELL_SYSGPOCTL_GPOCTL_RAT3         0xf
 
 
-
-
 /** @addtogroup cpu_specific_peripheral_memory_map
  * @{
  */
 #define RFC_PWR_BASE           (0x40040000)
 /** @} */
-
 
 typedef struct {
     reg32_t PWMCLKEN;

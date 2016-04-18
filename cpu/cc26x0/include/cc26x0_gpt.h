@@ -72,6 +72,7 @@ typedef struct {
 #define GPT3_BASE               (0x40013000) /**< GTP3 base address */
 /** @} */
 
+
 /**
  * @brief   GPT instances
  * @{
@@ -81,6 +82,7 @@ typedef struct {
 #define GPT2 ((gpt_reg_t *) (GPT2_BASE))
 #define GPT3 ((gpt_reg_t *) (GPT3_BASE))
 /** @} */
+
 
 /**
  * @brief   GPT register values
@@ -198,6 +200,7 @@ typedef struct {
 #define GPT_DMAEV_CBMDMAEN          0x00000200
 #define GPT_DMAEV_CBEDMAEN          0x00000400
 #define GPT_DMAEV_TBMDMAEN          0x00000800
+
 /** @} */
 
 #define GPT_NUMOF               4 /**< GPT count */

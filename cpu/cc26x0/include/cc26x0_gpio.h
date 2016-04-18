@@ -25,6 +25,7 @@
 extern "C" {
 #endif
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
  * @{
  */

@@ -38,6 +38,7 @@ typedef struct {
     reg32_t GPIODIE; /**< gpio data input enable */
 } aux_aiodio_regs_t;
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
   */
@@ -64,6 +65,7 @@ typedef struct {
     reg32_t PRECTL; /**< prescaler control */
     reg32_t PRECNT; /**< prescaler counter */
 } aux_tdc_regs_t;
+
 
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
@@ -96,6 +98,7 @@ typedef struct {
     reg32_t EVTOAONFLAGSCLR; /**< events to AON domain clear */
     reg32_t VECFLAGSCLR; /**< vector flags clear */
 } aux_evtcl_regs_t;
+
 
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
@@ -132,6 +135,7 @@ typedef struct {
     reg32_t MODCLKEN1; /**< module clock enable 1 */
 } aux_wuc_regs_t;
 
+
 /**
  * @brief   AUX_WUC register values
  * @{
@@ -167,6 +171,7 @@ typedef struct {
     reg32_t T1CTL; /**< timer 1 control */
 } aux_timer_regs_t;
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
   */
@@ -191,6 +196,7 @@ typedef struct {
     reg32_t AUTOTAKE; /**< sticky request for single semaphore */
 } aux_smph_regs_t;
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
   */
@@ -211,6 +217,7 @@ typedef struct {
     reg32_t ADCTRIG; /**< ADC trigger */
     reg32_t ISRCCTL; /**< current source control */
 } aux_anaif_regs_t;
+
 
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
@@ -237,6 +244,7 @@ typedef struct {
     reg8_t ADCREF0; /**< ADC reference 0 */
     reg8_t ADCREF1; /**< ADC reference 1 */
 } adi_4_aux_regs_t;
+
 
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
