@@ -61,13 +61,95 @@ void rfc_irq_disable(void)
     NVIC_DisableIRQ(RF_CMD_ACK_IRQN);
 }
 
+uint32_t rfc_send_cmd(uint32_t ropAddr)
+{
+    RFC_DBELL->CMDR = ropAddr;
+  /* wait for cmd ack (rop cmd was submitted successfully) */
+  while(RFC_DBELL->RFACKIFG<<31);
+  while(!RFC_DBELL->CMDSTA);
+  if (RFC_DBELL->CMDSTA == 1)
+  {
+    printf("%s: radio operation command acknowledged. \n",__FUNCTION__);
+  }
+  else
+  {
+    printf("%s: acknowledgement of radio operation command failed (0x%" PRIu32 ") \n",__FUNCTION__,RFC_DBELL->CMDSTA);
+  }
+
+  return RFC_DBELL->CMDSTA;
+}
+
+uint16_t rfc_wait_cmd_done(void* ropCmd)
+{
+  radio_op_command_t *command = (radio_op_command_t *)ropCmd;
+  uint32_t timeout_cnt = 0;
+  /* wait for cmd execution. condition on rop status doesn't work by itself (too fast?). */
+  do{
+    if(++timeout_cnt > 500000)
+    {
+      printf("%s: execution error. ROP id: 0x%" PRIx16 " status: 0x%" PRIx16 " \n",__FUNCTION__,command->commandNo,command->status);
+      return ROP_CMD_STATUS_DONE_TIMEOUT;
+    }
+  } while(command->status < ROP_CMD_STATUS_SKIPPED);
+  if (command->status == 0x0400) {
+    printf("%s: radio operation ended normally. \n",__FUNCTION__);
+  }
+  else
+  {
+    printf("%s: execution error. ROP id: 0x%" PRIx16 " status: 0x%" PRIx16 " \n",__FUNCTION__,command->commandNo,command->status);
+  }
+
+  return command->status;
+}
+
+void rfc_test_cmd(void)
+{
+  printf("\n===> %s <===\n",__FUNCTION__);
+
+  printf("\nDirect command...\n");
+  direct_command_t pingCommand;
+  pingCommand.commandID = DIR_CMD_CMDID_PING;
+  RFC_DBELL->CMDR |= (uint32_t) (&pingCommand);
+  while(!RFC_DBELL->CMDSTA); /* wait for cmd execution */
+  if (RFC_DBELL->CMDSTA == RFC_DBELL_CMDSTA_RESULT_DONE)
+  {
+    printf("Ping successful!\n");
+  }
+  else
+  {
+    printf("Ping failed. CMDSTA: 0x%" PRIu32 " \n", RFC_DBELL->CMDSTA);
+  };
+
+  printf("\nRadio operation command...\n");
+  radio_op_command_t ropCommand;
+  memset(&ropCommand,0,sizeof(ropCommand));
+  ropCommand.commandNo = ROP_CMD_CMDID_NOP;
+  ropCommand.status = ROP_CMD_STATUS_IDLE;
+  ropCommand.condition.rule = 1; /* never run next cmd. need to implement definition */
+  rfc_send_cmd((uint32_t) &ropCommand);
+  uint16_t status = rfc_wait_cmd_done(&ropCommand);
+  if (status > 1 || status == 0) {
+    printf("Radio operation command (NOP) failed. Status: 0x%" PRIx16" \n",ropCommand.status);
+  }
+  else
+  {
+    printf("Radio operation command (NOP) successful! Status: 0x%" PRIx16" \n",status);
+  }
+}
+
 void rfc_setup_ble(void)
 {
-    uint8_t buf[sizeof(radio_setup_t) + 3];
-    radio_setup_t *rs = (radio_setup_t *)((uintptr_t)(buf + 3) & (0xFFFFFFFC));
-    memset(rs, 0, sizeof(rs));
+    printf("\n===> %s <===\n",__FUNCTION__);
+    radio_setup_cmd_t rs;
+    memset(&rs, 0, sizeof(rs));
+    rs.op.commandNo =ROP_CMD_CMDID_SETUP;
+    rs.op.status = ROP_CMD_STATUS_IDLE;
+    rs.op.condition.rule = 1; /*never run next cmd */
+    rs.mode |= RADIO_SETUP_MODE_BLE;
+    rs.pRegOverride = NULL;
+    rfc_send_cmd((uint32_t) &rs);
+    rfc_wait_cmd_done(&rs);
 
-    run_command_ptr(&rs->op);
 }
 
 /*void rfc_beacon(void)
@@ -114,6 +196,36 @@ void rfc_prepare(void)
     /* RFC IRQ */
     rfc_irq_enable();
 
+    /* PING CORE */
+    direct_command_t pingCommand;
+    pingCommand.commandID = DIR_CMD_CMDID_PING;
+    RFC_DBELL->CMDR |= (uint32_t) (&pingCommand);
+    while(!RFC_DBELL->CMDSTA);
+    if (RFC_DBELL->CMDSTA == RFC_DBELL_CMDSTA_RESULT_DONE)
+    {
+      printf("Ping: RFCore boot successful!\n");
+    }
+    else
+    {
+      printf("Ping: RFCore boot failed. CMDSTA: 0x%" PRIu32 " \n", RFC_DBELL->CMDSTA);
+    };
+
+    /*RFC TIMER */
+    printf("Starting radio timer...\n");
+    direct_command_t ratCommand;
+    ratCommand.commandID = DIR_CMD_CMDID_START_RAT;
+    RFC_DBELL->CMDR = (uint32_t) (&ratCommand);
+    while(!RFC_DBELL->CMDSTA); /* wait for cmd ack */
+    if (RFC_DBELL->CMDSTA == RFC_DBELL_CMDSTA_RESULT_DONE)
+    {
+      printf("Radio timer started successfully!\n");
+    }
+    else
+    {
+      printf("Radio timer start failed. CMDSTA: 0x%" PRIu32 " \n", RFC_DBELL->CMDSTA);
+    };
+
+    rfc_test_cmd();
     rfc_setup_ble();
 
         //rfc_beacon();
