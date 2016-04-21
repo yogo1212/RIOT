@@ -75,6 +75,7 @@ typedef struct {
 #define CMDR_TYPE_mask            0x3
 #define CMDR_TYPE_ROP_IMM         0x0
 /* pointer is 32-bit word aligned and the 2 LSB are not stored (implicit 0) */
+<<<<<<< HEAD
 #define CMDR_CMDPTR_pos           2 /* used for immediate and radio commands */
 #define CMDR_CMDPTR_mask          0xFFFFFFFC
 #define CMDR_TYPE_DIRECT          0x1
@@ -306,6 +307,7 @@ typedef struct {
 #define PWMCLKEN_RFCTRC     0x00000400
 
 
+<<<<<<< HEAD
 
 
 

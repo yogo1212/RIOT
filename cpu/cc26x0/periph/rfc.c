@@ -1,25 +1,9 @@
 /*
-<<<<<<< HEAD
  * Copyright (C) 2016 Leon George, Florent-Valéry Coen
-=======
- * Copyright (C) 2016 Leon George
->>>>>>> enabled interrupts of RF Core in NVIC
  *
  * This file is subject to the terms and conditions of the GNU Lesser
  * General Public License v2.1. See the file LICENSE in the top level
  * directory for more details.
- */
-
-/**
- * @ingroup     cpu_cc26x0
- * @{
- *
- * @file
- * @brief       RFC driver implementation for the CC26x0
- *
- * @author
- *
- * @}
  */
 
 #include <stdio.h>
@@ -29,9 +13,6 @@
 #include "cc26x0_prcm.h"
 #include "cc26x0_rfc.h"
 #include "cpu_conf.h"
-
-#include "periph_rfc.h"
-#include "rfc.h"
 
 #define BLE_ADV_STR "this is not a riot\n"
 
