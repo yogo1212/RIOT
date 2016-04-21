@@ -22,11 +22,8 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "cc26x0_prcm.h"
-#include "cc26x0_rfc.h"
 #include "cpu_conf.h"
 
-#include "periph_rfc.h"
 #include "rfc.h"
 
 #define BLE_ADV_STR "this is not a riot\n"
