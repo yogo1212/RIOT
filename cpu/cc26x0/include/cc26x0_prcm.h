@@ -303,6 +303,8 @@ typedef struct {
 #define PDSTAT1_CPU_ON      0x2
 #define PDSTAT1_RFC_ON      0x4
 #define PDSTAT1_VIMS_ON     0x8
+
+
 /** @} */
 
 /** @ingroup cpu_specific_peripheral_memory_map
