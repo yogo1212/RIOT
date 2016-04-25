@@ -84,6 +84,7 @@ typedef struct {
     uintptr_t pParams;// TODO type this properly once type is known (damn datashiet)
 } ble_update_adv_payload_t;
 
+
 #ifdef __cplusplus
 }
 #endif

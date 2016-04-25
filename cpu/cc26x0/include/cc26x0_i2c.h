@@ -55,6 +55,7 @@ typedef struct {
     reg32_t MCR; /**< master configuration */
 } i2c_regs_t;
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
   */

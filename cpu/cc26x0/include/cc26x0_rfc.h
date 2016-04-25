@@ -286,7 +286,6 @@ typedef struct {
 #define RFC_PWR_BASE           (0x40040000)
 /** @} */
 
-
 typedef struct {
     reg32_t PWMCLKEN;
 } cc26x0_rfc_pwr_regs_t;
@@ -306,6 +305,7 @@ typedef struct {
 #define PWMCLKEN_RFCTRC     0x00000400
 
 
+<<<<<<< HEAD
 
 
 

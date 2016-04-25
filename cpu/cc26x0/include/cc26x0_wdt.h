@@ -39,6 +39,7 @@ typedef struct {
     reg32_t LOCK; /**< lock */
 } wdt_regs_t;
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
   */
@@ -46,6 +47,7 @@ typedef struct {
 /*@}*/
 
 #define WDT           ((wdt_regs_t *) (WDT_BASE)) /**< WDT register bank */
+
 
 #ifdef __cplusplus
 } /* end extern "C" */
