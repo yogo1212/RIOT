@@ -1,11 +1,16 @@
+/*
+ * Copyright (C) 2016 Leon George, Florent-Valéry Coen
+ *
+ * This file is subject to the terms and conditions of the GNU Lesser
+ * General Public License v2.1. See the file LICENSE in the top level
+ * directory for more details.
+ */
 #include <stdio.h>
 #include <string.h>
 
 #include "cc26x0_prcm.h"
 
 #include "cc26x0_rfc.h"
-
-#include "periph_rfc.h"
 
 #define BLE_ADV_STR "this is not a riot\n"
 
@@ -64,8 +69,8 @@ void rfc_beacon(void)
     uint8_t buf[sizeof(ble_rop_cmd_t) + 3];
     ble_rop_cmd_t *rop = (ble_rop_cmd_t *)((uintptr_t)(buf + 3) & (0xFFFFFFFC));
 
-    //rop->op.commandNo = RFC_DBELL_CMDR_CMDID_BLE_ADV_SCAN;
-    rop->op.commandNo = RFC_DBELL_CMDR_CMDID_PING;
+    //rop->op.commandNo = CMDR_CMDID_BLE_ADV_SCAN;
+    rop->op.commandNo = CMDR_CMDID_PING;
     rop->op.status = 0;
     rop->op.pNextOp = 0;
     rop->op.startTrigger = 0;
@@ -86,8 +91,9 @@ void rfc_prepare(void)
     PRCM->CLKLOADCTL = CLKLOADCTL_LOAD;
     while (!(PRCM->CLKLOADCTL & CLKLOADCTL_LOADDONE)) ;
 
-    PRCM->PDCTL0RFC = 1;
-    PRCM->PDCTL1RFC = 1;
+    /* RFC POWER DOMAIN */
+    PRCM->PDCTL0 |= PDCTL0_RFC_ON;
+    PRCM->PDCTL1 |= PDCTL1_RFC_ON;
     while (!(PRCM->PDSTAT0 & PDSTAT0_RFC_ON)) ;
     while (!(PRCM->PDSTAT1 & PDSTAT1_RFC_ON)) ;
 
