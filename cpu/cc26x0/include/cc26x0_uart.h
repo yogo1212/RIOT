@@ -50,6 +50,7 @@ typedef struct {
     reg32_t DMACTL; /**< DMA control */
 } uart_regs_t;
 
+
 /**
  * @brief   UART register values
  * @{
@@ -121,6 +122,7 @@ typedef struct {
 #define UART_IFLS_RXSEL_4_8     0x10
 #define UART_IFLS_RXSEL_6_8     0x18
 #define UART_IFLS_RXSEL_7_8     0x20
+
 /** @} */
 
 #define UART ((uart_regs_t *) (UART_BASE)) /**< UART register bank */

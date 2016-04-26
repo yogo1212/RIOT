@@ -25,6 +25,7 @@
 extern "C" {
 #endif
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
  * @{
  */
@@ -147,6 +148,7 @@ typedef struct {
     reg32_t IOCLATCH; /**< IO latch control */
     reg32_t CLK32KCTL; /**< SCLK_LF external output control */
 } aon_regs_t;
+
 
 #define AON                     ((aon_regs_t *) (AON_IOC_BASE)) /**< AON register bank */
 

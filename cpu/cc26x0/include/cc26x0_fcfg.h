@@ -22,6 +22,7 @@
 extern "C" {
 #endif
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
  * @{
  */
@@ -128,7 +129,9 @@ typedef struct {
     reg32_t PWD_CURR_125C; /**< power down current control 125C */
 } fcfg_regs_t;
 
+
 #define FCFG ((fcfg_regs_t *) (FCFG_BASE)) /**< FCFG register bank */
+
 
 #ifdef __cplusplus
 } /* end extern "C" */
