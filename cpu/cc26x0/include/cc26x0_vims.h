@@ -171,6 +171,7 @@ typedef struct {
     reg32_t FCFG_B0_SSIZE0; /**< FMC flash bank 0 sector size */
 } flash_regs_t;
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
   */
