@@ -83,6 +83,38 @@ uint16_t rfc_wait_cmd_done(radio_op_command_t *command)
     return command->status;
 }
 
+void rfc_test_cmd(void)
+{
+    printf("\n===> %s <===\n",__FUNCTION__);
+
+    printf("\nDirect command...\n");
+    direct_command_t pingCommand;
+    pingCommand.commandID = CMDR_CMDID_PING;
+    RFC_DBELL->CMDR |= (uint32_t) (&pingCommand);
+    while (!RFC_DBELL->CMDSTA); /* wait for cmd execution */
+    if (RFC_DBELL->CMDSTA == CMDSTA_RESULT_DONE) {
+        printf("Ping successful!\n");
+    }
+    else {
+        printf("Ping failed. CMDSTA: 0x%" PRIu32 " \n", RFC_DBELL->CMDSTA);
+    };
+
+    printf("\nRadio operation command...\n");
+    nop_cmd_t nopCommand;
+    memset(&nopCommand,0,sizeof(nopCommand));
+    nopCommand.ropCmd.commandNo = CMDR_CMDID_NOP;
+    nopCommand.ropCmd.status = R_OP_STATUS_IDLE;
+    nopCommand.ropCmd.condition.rule = 1; /* never run next cmd. need to implement definition */
+    rfc_send_cmd((uint32_t) &nopCommand);
+    uint16_t status = rfc_wait_cmd_done(&(nopCommand.ropCmd));
+    if (status != R_OP_STATUS_DONE_OK) {
+        printf("Radio operation command (NOP) failed. Status: 0x%" PRIx16" \n",nopCommand.ropCmd.status);
+    }
+    else {
+        printf("Radio operation command (NOP) successful! Status: 0x%" PRIx16" \n",status);
+    }
+}
+
 void rfc_prepare(void)
 {
     /* RFC POWER DOMAIN CLOCK GATE */
@@ -105,4 +137,7 @@ void rfc_prepare(void)
 
     /* RFC IRQ */
     rfc_irq_enable();
+
+    /* PING CORE */
+    rfc_test_cmd();
 }
