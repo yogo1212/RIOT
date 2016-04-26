@@ -7,37 +7,41 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include <inttypes.h>
 
 #include "cc26x0_prcm.h"
-
 #include "cc26x0_rfc.h"
 
 #define BLE_ADV_STR "this is not a riot\n"
 
 void isr_rfc_cmd_ack(void)
 {
-    printf("cmd_ack %lx\n", RFC_DBELL->RFACKIFG);
-    RFC_DBELL->RFACKIFG = 0;
+  /*waiting for CMDSTA ack. ROP ack = op submitted, DIR or IMM ack = op executed*/
+  while(RFC_DBELL->CMDSTA < 1);
+  printf("Command acknowledged. CMDSTA: 0x%" PRIu32 " \n", RFC_DBELL->CMDSTA);
+
+  /* clear ack interrupt flag */
+  RFC_DBELL->RFACKIFG = 0;
 }
 
 void isr_rfc_hw(void)
 {
     uint32_t asdf = RFC_DBELL->RFHWIFG;
-    printf("hw %lx\n", asdf);
+    printf("hw 0x%" PRIx32 "\n", asdf);
     RFC_DBELL->RFHWIFG = ~asdf;
 }
 
 void isr_rfc_cpe0(void)
 {
     uint32_t asdf = RFC_DBELL->RFCPEIFG;
-    printf("cpe0 %lx\n", asdf);
+    printf("cpe0 0x%" PRIx32 "\n", asdf);
     RFC_DBELL->RFCPEIFG = ~asdf;
 }
 
 void isr_rfc_cpe1(void)
 {
     uint32_t asdf = RFC_DBELL->RFCPEIFG;
-    printf("cpe1 %lx\n", asdf);
+    printf("cpe1 0x%" PRIx32 "\n", asdf);
     RFC_DBELL->RFCPEIFG = ~asdf;
 }
 
@@ -53,6 +57,22 @@ static void run_command_ptr(radio_op_command_t *rop)
         //printf("rop->op.status %x\n", rop->op.status);
     } while (rop->status < 4);
     printf("rop->op.status %x\n", rop->status);
+}
+
+void rfc_irq_enable(void)
+{
+    NVIC_EnableIRQ(RF_CMD_ACK_IRQN);
+    NVIC_EnableIRQ(RF_CPE0_IRQN);
+    NVIC_EnableIRQ(RF_CPE1_IRQN);
+    NVIC_EnableIRQ(RF_HW_IRQN);
+}
+
+void rfc_irq_disable(void)
+{
+    NVIC_DisableIRQ(RF_CMD_ACK_IRQN);
+    NVIC_EnableIRQ(RF_CPE0_IRQN);
+    NVIC_EnableIRQ(RF_CPE1_IRQN);
+    NVIC_EnableIRQ(RF_HW_IRQN);
 }
 
 void rfc_setup_ble(void)
@@ -86,6 +106,8 @@ void rfc_beacon(void)
 
 void rfc_prepare(void)
 {
+    printf("===> %s <===\n",__FUNCTION__);
+    /* RFC POWER DOMAIN CLOCK GATE */
     PRCM->RFCCLKG = 1;
 
     PRCM->CLKLOADCTL = CLKLOADCTL_LOAD;
@@ -97,20 +119,18 @@ void rfc_prepare(void)
     while (!(PRCM->PDSTAT0 & PDSTAT0_RFC_ON)) ;
     while (!(PRCM->PDSTAT1 & PDSTAT1_RFC_ON)) ;
 
+    /* RFC CLOCK */
     //RFC_PWR->PWMCLKEN |= RFC_PWR_PWMCLKEN_CPE;
     //RFC_PWR->PWMCLKEN |= RFC_PWR_PWMCLKEN_CPERAM;
     RFC_PWR->PWMCLKEN |= 0x7FF;
     printf("RFC_PWR->PWMCLKEN %lx\n", RFC_PWR->PWMCLKEN);
 
-    printf("IEN %lx\n", RFC_DBELL->RFCPEIEN);
-
-    printf("rfc-prep\n");
+    /* RFC IRQ */
+    rfc_irq_enable();
 
     rfc_setup_ble();
 
         rfc_beacon();
         rfc_beacon();
 
-    //while (true) {
-    //}
 }
