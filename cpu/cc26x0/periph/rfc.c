@@ -12,6 +12,9 @@
 #include "cc26x0_prcm.h"
 #include "cc26x0_rfc.h"
 
+#define ENABLE_DEBUG 0
+#include "debug.h"
+
 #define BLE_ADV_STR "this is not a riot\n"
 
 void isr_rfc_cmd_ack(void)
@@ -66,6 +69,8 @@ uint32_t rfc_send_cmd(uint32_t ropAddr)
     while (RFC_DBELL->RFACKIFG << 31);
     while (!RFC_DBELL->CMDSTA);
 
+    fprintf(stderr,"rfc_send_cmd: radio operation command ack (0x%" PRIu32 ") \n", RFC_DBELL->CMDSTA);
+
     return RFC_DBELL->CMDSTA;
 }
 
@@ -79,6 +84,8 @@ uint16_t rfc_wait_cmd_done(radio_op_command_t *command)
             break;
         }
     } while(command->status < R_OP_STATUS_SKIPPED);
+
+    fprintf(stderr,"rfc_wait_cmd_done: ROP id: 0x%" PRIx16 " status: 0x%" PRIx16 " \n", command->commandNo, command->status);
 
     return command->status;
 }
@@ -117,6 +124,7 @@ void rfc_test_cmd(void)
 
 void rfc_prepare(void)
 {
+    DEBUG("===> %s <===\n",__FUNCTION__);
     /* RFC POWER DOMAIN CLOCK GATE */
     PRCM->RFCCLKG = 1;
 
