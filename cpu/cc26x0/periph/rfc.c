@@ -85,25 +85,6 @@ uint16_t rfc_wait_cmd_done(void *ropCmd)
     return command->op.status;
 }
 
-void rfc_setup_ble(void)
-{
-    radio_setup_cmd_t rs;
-    memset(&rs, 0, sizeof(rs));
-
-    rfc_send_cmd(&rs.op);
-}
-
-void rfc_beacon(void)
-{
-    ble_rop_cmd_t rop;
-    memset(&rop, 0, sizeof(rop));
-
-    //rop->op.commandNo = CMDR_CMDID_BLE_ADV_SCAN;
-    rop.op.commandNo = CMDR_CMDID_PING;
-
-    rfc_send_cmd(&rop.op);
-}
-
 void rfc_prepare(void)
 {
     /* RFC POWER DOMAIN CLOCK GATE */
