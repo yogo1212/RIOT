@@ -47,6 +47,13 @@ void isr_rfc_cpe1(void)
 
 void rfc_irq_enable(void)
 {
+    /*route CPE internal error to CPE1, all other interrupts to CPE0*/
+    RFC_DBELL->RFCPEISL = RFCPEIFG_INTERNAL_ERROR;
+    /*enable servicing of interrupts*/
+    RFC_DBELL->RFCPEIEN = RFCPEIFG_INTERNAL_ERROR;
+    /*clear interrupt flags*/
+    RFC_DBELL->RFCPEIFG = 0;
+
     NVIC_EnableIRQ(RF_CMD_ACK_IRQN);
     NVIC_EnableIRQ(RF_CPE0_IRQN);
     NVIC_EnableIRQ(RF_CPE1_IRQN);
