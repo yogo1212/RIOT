@@ -129,6 +129,43 @@ void rfc_test_cmd(void)
     }
 }
 
+void rfc_setup_ble(void)
+{
+    printf("\n===> %s <===\n",__FUNCTION__);
+
+    radio_setup_cmd_t rs;
+    memset(&rs, 0, sizeof(rs));
+
+    rs.ropCmd.commandNo =CMDR_CMDID_SETUP;
+    rs.ropCmd.status = R_OP_STATUS_IDLE;
+    rs.ropCmd.condition.rule = R_OP_CONDITION_RULE_NEVER;
+    rs.mode |= RADIO_SETUP_MODE_BLE;
+    rs.txPower.IB = 0x29;
+    rs.txPower.GC = 0x00;
+    rs.txPower.tempCoeff = 0x00;
+    rs.txPower.boost = 0x00;
+    static uint32_t ble_overrides[] = {
+        0x00364038, /* Synth: Set RTRIM (POTAILRESTRIM) to 6 */
+        0x000784A3, /* Synth: Set FREF = 3.43 MHz (24 MHz / 7) */
+        0xA47E0583, /* Synth: Set loop bandwidth after lock to 80 kHz (K2) */
+        0xEAE00603, /* Synth: Set loop bandwidth after lock to 80 kHz (K3, LSB) */
+        0x00010623, /* Synth: Set loop bandwidth after lock to 80 kHz (K3, MSB) */
+        0x00456088, /* Adjust AGC reference level */
+        0xFFFFFFFF, /* End of override list */
+    };
+    rs.pRegOverride = ble_overrides;
+
+    rfc_send_cmd((uint32_t) &rs);
+    uint16_t status = rfc_wait_cmd_done(&(rs.ropCmd));
+    if (status != R_OP_STATUS_DONE_OK) {
+        printf("BLE setup failed.\n");
+    }
+    else
+    {
+        printf("BLE setup successful!\n");
+    }
+}
+
 void rfc_prepare(void)
 {
     DEBUG("===> %s <===\n",__FUNCTION__);
@@ -168,4 +205,6 @@ void rfc_prepare(void)
     else {
         printf("Radio timer start failed. CMDSTA: 0x%" PRIu32 " \n", RFC_DBELL->CMDSTA);
     };
+
+    rfc_setup_ble();
 }
