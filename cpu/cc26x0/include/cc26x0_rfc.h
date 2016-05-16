@@ -425,7 +425,7 @@ typedef struct __attribute__ ((aligned(4))) {
     struct {
         uint16_t IB:6;
         uint16_t GC:2;
-        uint16_t boost:1;
+        uint16_t boost:1; // TODO not in datashiet?
         uint16_t tempCoeff:7;
     } txPower; /* W */
     uint32_t *pRegOverride; /* W */
