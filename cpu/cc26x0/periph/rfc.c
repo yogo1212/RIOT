@@ -140,4 +140,17 @@ void rfc_prepare(void)
 
     /* PING CORE */
     rfc_test_cmd();
+
+    /*RFC TIMER */
+    printf("Starting radio timer...\n");
+    direct_command_t ratCommand;
+    ratCommand.commandID = CMDR_CMDID_START_RAT;
+    RFC_DBELL->CMDR = (uint32_t) (&ratCommand);
+    while (!RFC_DBELL->CMDSTA); /* wait for cmd ack */
+    if (RFC_DBELL->CMDSTA == CMDSTA_RESULT_DONE) {
+        printf("Radio timer started successfully!\n");
+    }
+    else {
+        printf("Radio timer start failed. CMDSTA: 0x%" PRIu32 " \n", RFC_DBELL->CMDSTA);
+    };
 }
