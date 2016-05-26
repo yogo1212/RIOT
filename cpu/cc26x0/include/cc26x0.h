@@ -85,6 +85,7 @@ typedef enum IRQn
     IRQN_COUNT            = (TRNG_IRQN + 1) /**< Number of peripheral IDs */
 } IRQn_Type;
 
+
 /**
  * @brief Configuration of the Cortex-M3 processor and core peripherals
  */
@@ -95,6 +96,7 @@ typedef enum IRQn
 
 #define RCOSC48M_FREQ               48000000 /**< 48 MHz */
 #define RCOSC24M_FREQ               24000000 /**< 24 MHz */
+
 
 /**
  * @brief CMSIS includes

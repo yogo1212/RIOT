@@ -46,6 +46,7 @@ typedef struct {
     reg32_t STAT2; /**< status 2 */
 } ddi0_osc_regs_t;
 
+
 /**
  * @brief   DDI_0_OSC register values
  * @{
@@ -98,6 +99,7 @@ typedef struct {
     reg32_t SLEEPCTL; /**< sleep mode */
 } aon_sysctl_regs_t;
 
+
 /** @ingroup cpu_specific_peripheral_memory_map
   * @{
   */
@@ -129,6 +131,7 @@ typedef struct {
     reg32_t JTAGCFG; /**< JTAG config */
     reg32_t JTAGUSERCODE; /**< JTAG USERCODE */
 } aon_wuc_regs_t;
+
 
 /**
  * @brief   AON_WUC register values
@@ -280,6 +283,7 @@ typedef struct {
     reg32_t __reserved14[8]; /**< meh */
     reg32_t RAMHWOPT; /**< undocumented */
 } prcm_regs_t;
+
 
 /**
  * @brief   PRCM register values
