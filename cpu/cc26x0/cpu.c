@@ -53,4 +53,10 @@ static void cpu_clock_init(void)
     DDI_0_OSC->CTL0 |= HF_CLOCK_SOURCE | LF_CLOCK_SOURCE /* configure HF and LF clocks */
                     | DDI_0_OSC_CTL0_SCLK_MF_SRC_SEL
                     | DDI_0_OSC_CTL0_XTAL_IS_24M;
+
+    /* wait for hf_xosc to start */
+    while ((DDI_0_OSC->STAT0 & 0x1) == 0) { }
+
+    /* switch to hf_xosc */
+    HAPI->HFSourceSafeSwitch();
 }

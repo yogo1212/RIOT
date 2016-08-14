@@ -21,6 +21,8 @@
 extern "C" {
 #endif
 
+typedef void (*hapi_hfsourcesafeswitch_t)(void);
+
 /**
  * HAPI function table
  */
@@ -39,7 +41,7 @@ typedef struct {
     void *standDeviationValue;
     void *_reserved4;
     void *_reserved5;
-    void *HFSourceSafeSwitch;
+    hapi_hfsourcesafeswitch_t HFSourceSafeSwitch;
     void *selectCompAInput;
     void *selectCompARef;
     void *selectADCCompBInput;
