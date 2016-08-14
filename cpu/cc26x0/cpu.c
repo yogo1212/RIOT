@@ -50,5 +50,7 @@ static void cpu_clock_init(void)
     while(!(AON_WUC->PWRSTAT & PWRSTAT_AUX_PD_ON)); /* wait for AUX_PD to be powered on */
     AUX_WUC->MODCLKEN0 |= MODCLKEN0_AUX_DDI0_OSC_EN; /* turn on oscillator interface clock */
 
-    DDI_0_OSC->CTL0 |= HF_CLOCK_SOURCE | LF_CLOCK_SOURCE; /* configure HF and LF clocks */
+    DDI_0_OSC->CTL0 |= HF_CLOCK_SOURCE | LF_CLOCK_SOURCE /* configure HF and LF clocks */
+                    | DDI_0_OSC_CTL0_SCLK_MF_SRC_SEL
+                    | DDI_0_OSC_CTL0_XTAL_IS_24M;
 }
